@@ -12,6 +12,7 @@
   <li>Storage Space: 256 Gb</li>
 </ul>
 
-#Usage
-First ensure you are running Ubuntu on A Raspberry Pi4.
+# Usage
+<p>First ensure you are running Ubuntu on A Raspberry Pi4 and Have a USB camera attatched.</p>
 <code>sudo docker run --device /dev/video0 -p 5000:5000 alexbenko/cam</code>
+<p>If you only have 1 usb camera you dont have to change anything, otherwise you need to figure out what the name of the camera is.</p>
