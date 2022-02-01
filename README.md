@@ -11,3 +11,7 @@
   <li>Ram: 4Gb</l1>
   <li>Storage Space: 256 Gb</li>
 </ul>
+
+#Usage
+First ensure you are running Ubuntu on A Raspberry Pi4.
+<code>sudo docker run --device /dev/video0 -p 5000:5000 alexbenko/cam</code>
