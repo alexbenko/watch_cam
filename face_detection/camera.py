@@ -1,4 +1,5 @@
-# import the necessary packages
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import cv2
 # defining face detector
 face_cascade=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")

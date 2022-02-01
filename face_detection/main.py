@@ -1,5 +1,8 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template, Response
 from camera import VideoCamera
+import os
 
 app = Flask(__name__)
 @app.route('/')
@@ -16,4 +19,8 @@ def video_feed():
     return Response(gen(VideoCamera()),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
+    print(os.environ.get('password'))
     app.run(host='0.0.0.0',port='5000', debug=True)
+
+#docker build -t cam:latest .
+#docker tag cam alexbenko/cam && docker push alexbenko/cam
