@@ -1,4 +1,13 @@
 # About
 <p>
-  Using OpenCv and Flask I am able to "live stream" a usb camera connected to my Raspberry Pi 4. Currently only the server in the face_detection folder works on the my Pi. The threaded_face_detection works on my MacBook Pro 2019 though.
+  Using OpenCv and Flask I am able to "live stream" a usb camera connected to my Raspberry Pi. Currently only the server in the face_detection folder works on the my Pi. The threaded_face_detection works on my MacBook Pro 2019 though.
 </p>
+
+
+<ul>
+  <h2>Info About My Pi</h2>
+  <li>Model: Raspberry Pi4B</li>
+  <li>OS: Ubuntu 20.0.4</li>
+  <l1>Ram: 4Gb</l1>
+  <li>Storage Space: 256 Gb</li>
+</ul>
