@@ -8,6 +8,6 @@
   <h2>Info About My Pi</h2>
   <li>Model: Raspberry Pi4B</li>
   <li>OS: Ubuntu 20.0.4</li>
-  <l1>Ram: 4Gb</l1>
+  <li>Ram: 4Gb</l1>
   <li>Storage Space: 256 Gb</li>
 </ul>
