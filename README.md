@@ -3,6 +3,8 @@
   Using OpenCv and Flask I am able to "live stream" a usb camera connected to my Raspberry Pi. Currently only the server in the face_detection folder works on the my Pi. The threaded_face_detection works on my MacBook Pro 2019 though.
 </p>
 
+<p>I have set up a docker container pushed to Dockerhub. See bellow on everything you need set up.</p>
+
 
 <ul>
   <h2>Info About My Pi</h2>
