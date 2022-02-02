@@ -15,4 +15,4 @@ RUN pip3 install -r requirements.txt
 COPY . .
 EXPOSE 5000
 ENTRYPOINT [ "python3" ]
-CMD ["main.py" "--host=0.0.0.0"]
+CMD ["app.py" "--host=0.0.0.0"]
