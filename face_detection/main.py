@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, Response
 from models import Sensor,VideoCamera
-
+import math
 def bytesto(bytes, to, bsize=1024):
     a = {'k' : 1, 'm': 2, 'g' : 3, 't' : 4, 'p' : 5, 'e' : 6 }
     r = float(bytes)
-    return Math.floor(bytes / (bsize ** a[to]))
+    return math.floor(bytes / (bsize ** a[to]))
 
 def gen(camera):
     while True:
