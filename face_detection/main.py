@@ -19,6 +19,10 @@ def index():
 def video_feed():
     return Response(gen(VideoCamera()),mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/status')
+def status():
+    cpu_temp = Monitor.getCPUtemperature()
+    return render_template('status.html',cpu_temp=cpu_temp)
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port='5000')
 
