@@ -1,6 +1,5 @@
 flask
 opencv-contrib-python
 python-dotenv
-psutil
 gpiozero
 RPi.GPIO
