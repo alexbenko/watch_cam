@@ -1,7 +1,9 @@
-import psutil
+import shutil
 from gpiozero import CPUTemperature
 
-class Monitor(object):
+class Sensor(object):
   def getCPUtemperature():
     cpu = CPUTemperature()
     return cpu.temperature
+  def getDiskUsage():
+    return shutil.disk_usage('/')
