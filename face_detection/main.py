@@ -1,15 +1,19 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, Response
-
 from models import Sensor,VideoCamera
 
+def bytesto(bytes, to, bsize=1024):
+    a = {'k' : 1, 'm': 2, 'g' : 3, 't' : 4, 'p' : 5, 'e' : 6 }
+    r = float(bytes)
+    return Math.floor(bytes / (bsize ** a[to]))
 
-app = Flask(__name__)
 def gen(camera):
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+app = Flask(__name__)
 
 @app.route('/')
 def index():
@@ -22,7 +26,14 @@ def video_feed():
 @app.route('/status')
 def status():
     cpu_temp = Sensor.getCPUtemperature()
-    return render_template('status.html',cpu_temp=cpu_temp)
+
+    total, used, free = Sensor.getDiskUsage()
+    total = bytesto(total,'g')
+    used = bytesto(used,'g')
+    free = bytesto(free,'g')
+    diskUsage = {"total":total, "used": used,"free": free}
+
+    return render_template('status.html',cpu_temp=cpu_temp, diskUsage=diskUsage)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port='5000')
