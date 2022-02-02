@@ -23,8 +23,8 @@ def video_feed():
 def status():
     cpu_temp = Sensor.getCPUtemperature()
     return render_template('status.html',cpu_temp=cpu_temp)
+
 if __name__ == '__main__':
-    print()
     app.run(host='0.0.0.0',port='5000')
 
 #docker build -t cam:latest .
