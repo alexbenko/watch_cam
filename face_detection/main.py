@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, Response
-from camera import VideoCamera
-from monitor import Monitor
-import os
+
+from models import Sensor,VideoCamera
+
 
 app = Flask(__name__)
 def gen(camera):
@@ -21,9 +21,10 @@ def video_feed():
 
 @app.route('/status')
 def status():
-    cpu_temp = Monitor.getCPUtemperature()
+    cpu_temp = Sensor.getCPUtemperature()
     return render_template('status.html',cpu_temp=cpu_temp)
 if __name__ == '__main__':
+    print()
     app.run(host='0.0.0.0',port='5000')
 
 #docker build -t cam:latest .
