@@ -7,25 +7,38 @@ import time
 
 face_cascade=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 ds_factor=0.6
-save_images = False
-
 class VideoCamera(object):
+    images_folder_path= '../recordings'
+    save_images = True
     def __init__(self):
        self.video = cv2.VideoCapture(0)
 
     def __del__(self):
         self.video.release()
     def save_image(self, image):
-      folderPath= './images'
       todays_date = datetime.date.today()
-      todays_folder = f'{folderPath}/{todays_date}'
+      todays_folder = f'{self.images_folder_path}/{todays_date}'
 
       if(not os.path.isdir(todays_folder)): #if todays folder doesnt exist
         os.makedirs(todays_folder,exist_ok = True) #create it
 
       rn = int(time.time()) # simplest way to generate unique name for each frame
       cv2.imwrite(f'{todays_folder}/{rn}.png', image)
+    def createVideo(self, date):
+      #date is expected to be in: yyyy-mm-dd ie datetime.date.today()
+      image_folder = f'{self.images_folder_path}/{date}'
+      video_name = f'{self.images_folder_path}/{date}/{date}.avi'
+      images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
+      frame = cv2.imread(os.path.join(image_folder, images[0]))
+      height, width, layers = frame.shape
 
+      video = cv2.VideoWriter(video_name, 0, 1, (width,height))
+
+      for image in images:
+          video.write(cv2.imread(os.path.join(image_folder, image)))
+
+      cv2.destroyAllWindows()
+      video.release()
     def get_frame(self):
       #extracting frames
       ret, frame = self.video.read()
@@ -43,7 +56,7 @@ class VideoCamera(object):
       # encode OpenCV raw frame to jpg and displaying it
       ret, jpeg = cv2.imencode('.jpg', frame)
 
-      if save_images:
+      if self.save_images:
         self.save_image(frame)
 
       return jpeg.tobytes()
