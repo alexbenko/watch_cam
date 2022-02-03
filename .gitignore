@@ -133,3 +133,5 @@ venv
 
 opencv_visualisation --image=/data/object.png --model=/data/model.xml --data=/data/result/
 opencv_annotation --annotations=/file.txt --images=/photos
+watch_cam/dog.xml
+watch_cam/models/photos
