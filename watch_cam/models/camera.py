@@ -22,8 +22,10 @@ class VideoCamera(object):
 
       if(not os.path.isdir(todays_folder)): #if todays folder doesnt exist
         os.makedirs(todays_folder,exist_ok = True) #create it
+
       rn = int(time.time()) # simplest way to generate unique name for each frame
       cv2.imwrite(f'{todays_folder}/{rn}.png', image)
+
     def get_frame(self):
       #extracting frames
       ret, frame = self.video.read()
