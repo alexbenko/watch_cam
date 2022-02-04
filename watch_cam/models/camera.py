@@ -67,22 +67,27 @@ class VideoCamera(object):
       frame=cv2.resize(frame,None,fx=ds_factor,fy=ds_factor,interpolation=cv2.INTER_AREA)
 
       gray_frame=cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
-      gray_frame=cv2.GaussianBlur(gray_frame,(25,25),0)
+      gray_frame=cv2.GaussianBlur(gray_frame,(21,21),0)
 
       if baseline_image is None:
-        #this means it needs to grab first image
+        #this means it needs to grab first frame to compare to second, see face_detection in main.py
         baseline_image=gray_frame
         return baseline_image
 
-      delta=cv2.absdiff(baseline_image,gray_frame)
-      threshold=cv2.threshold(delta,35,255, cv2.THRESH_BINARY)[1]
-      (contours,_)=cv2.findContours(threshold,cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+      #Difference between static background and current
+      diff_frame = cv2.absdiff(baseline_image,gray_frame)
+
+      threshold_frame = cv2.threshold(diff_frame,30,255, cv2.THRESH_BINARY)[1]
+      threshold_frame = cv2.dilate(threshold_frame, None, iterations = 2)
+
+      (contours,_)=cv2.findContours(threshold_frame.copy(),cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
       for contour in contours:
-        if cv2.contourArea(contour) < 3000:
+        if cv2.contourArea(contour) < 5000:
           continue
+
         (x, y, w, h)=cv2.boundingRect(contour)
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0,255,0), 1)
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0,255,0), 3)
 
       timestamp = datetime.datetime.now()
       cv2.putText(frame, timestamp.strftime("%A %d %B %Y %I:%M:%S%p"), (10, frame.shape[0] - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0,255,0), 1)
