@@ -3,14 +3,20 @@
 import datetime
 import cv2
 import os
-import time
+import imutils
+import numpy as np
 
 face_cascade=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 ds_factor=0.6
 class VideoCamera(object):
     images_folder_path= './recordings'
     save_images = False
-    def __init__(self):
+    accumWeight=0.5
+    bg = None
+    outputFrame = None
+    total = 0
+
+    def __init__(self,):
        self.video = cv2.VideoCapture(0)
 
     def __del__(self):
@@ -62,41 +68,71 @@ class VideoCamera(object):
 
       return jpeg.tobytes()
 
-    def detect_motion(self,baseline_image=None):
+    def update_background(self, image):
+      # if the background model is None, initialize it
+      if self.bg is None:
+        self.bg = image.copy().astype("float")
+        return
+      # update the background model by accumulating the weighted
+      # average
+      cv2.accumulateWeighted(image, self.bg, self.accumWeight)
+
+    def find_motion(self, image, tVal=25):
+      delta = cv2.absdiff(self.bg.astype("uint8"), image)
+      thresh = cv2.threshold(delta, tVal, 255, cv2.THRESH_BINARY)[1]
+      # perform a series of erosions and dilations to remove small
+      # blobs
+      thresh = cv2.erode(thresh, None, iterations=2)
+      thresh = cv2.dilate(thresh, None, iterations=2)
+      cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+      cnts = imutils.grab_contours(cnts)
+      (minX, minY) = (np.inf, np.inf)
+      (maxX, maxY) = (-np.inf, -np.inf)
+
+      # if no contours were found, return None
+      if len(cnts) == 0:
+        return None
+      # otherwise, loop over the contours
+      for c in cnts:
+        # compute the bounding box of the contour and use it to
+        # update the minimum and maximum bounding box regions
+        (x, y, w, h) = cv2.boundingRect(c)
+        (minX, minY) = (min(minX, x), min(minY, y))
+        (maxX, maxY) = (max(maxX, x + w), max(maxY, y + h))
+      # otherwise, return a tuple of the thresholded image along
+      # with bounding box
+      return (thresh, (minX, minY, maxX, maxY))
+
+    def detect_motion(self,frameCount=32):
       ret, frame = self.video.read()
-      frame=cv2.resize(frame,None,fx=ds_factor,fy=ds_factor,interpolation=cv2.INTER_AREA)
-
-      gray_frame=cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
-      gray_frame=cv2.GaussianBlur(gray_frame,(21,21),0)
-
-      if baseline_image is None:
-        #this means it needs to grab first frame to compare to second, see face_detection in main.py
-        baseline_image=gray_frame
-        return baseline_image
-
-      #Difference between static background and current
-      diff_frame = cv2.absdiff(baseline_image,gray_frame)
-
-      threshold_frame = cv2.threshold(diff_frame,30,255, cv2.THRESH_BINARY)[1]
-      threshold_frame = cv2.dilate(threshold_frame, None, iterations = 2)
-
-      (contours,_)=cv2.findContours(threshold_frame.copy(),cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-      for contour in contours:
-        if cv2.contourArea(contour) < 5000:
-          continue
-
-        (x, y, w, h)=cv2.boundingRect(contour)
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0,255,0), 3)
-
+      frame = imutils.resize(frame, width=400)
+      gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+      gray = cv2.GaussianBlur(gray, (7, 7), 0)
+      # grab the current timestamp and draw it on the frame
       timestamp = datetime.datetime.now()
-      cv2.putText(frame, timestamp.strftime("%A %d %B %Y %I:%M:%S%p"), (10, frame.shape[0] - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0,255,0), 1)
-      # encode OpenCV raw frame to jpg and displaying it
+      cv2.putText(frame, timestamp.strftime("%A %d %B %Y %I:%M:%S%p"), (10, frame.shape[0] - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
+
+      # if the total number of frames has reached a sufficient
+      # number to construct a reasonable background model, then
+      # continue to process the frame
+      if self.total > frameCount:
+        # detect motion in the image
+        motion = self.find_motion(gray)
+        # check to see if motion was found in the frame
+        if motion is not None:
+          # unpack the tuple and draw the box surrounding the
+          # "motion area" on the output frame
+          (thresh, (minX, minY, maxX, maxY)) = motion
+          cv2.rectangle(frame, (minX, minY), (maxX, maxY),(0, 0, 255), 2)
+
+      # update the background model and increment the total number
+      # of frames read thus far
+      self.update_background(gray)
+      self.total += 1
       ret, jpeg = cv2.imencode('.jpg', frame)
 
       if self.save_images:
         self.save_image(frame)
 
       return jpeg.tobytes()
-
 
