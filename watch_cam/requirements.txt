@@ -3,3 +3,5 @@ opencv-contrib-python
 python-dotenv
 gpiozero
 RPi.GPIO
+numpy
+imutils
