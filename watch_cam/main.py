@@ -3,15 +3,18 @@
 from flask import Flask, render_template, Response
 from models import Sensor,VideoCamera
 import math
+from dotenv import load_dotenv
+import os
+
 def bytesto(bytes, to, bsize=1024):
-    a = {'k' : 1, 'm': 2, 'g' : 3, 't' : 4, 'p' : 5, 'e' : 6 }
-    r = float(bytes)
-    return math.floor(bytes / (bsize ** a[to]))
+  a = {'k' : 1, 'm': 2, 'g' : 3, 't' : 4, 'p' : 5, 'e' : 6 }
+  r = float(bytes)
+  return math.floor(bytes / (bsize ** a[to]))
 
 def face_detection(camera):
     while True:
-        frame = camera.detect_human_faces()
-        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+      frame = camera.detect_human_faces()
+      yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 def motion_detection(camera):
   while True:
@@ -23,26 +26,28 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+  app_title = os.getenv('appTitle')
+  return render_template('index.html', app_title=app_title)
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(motion_detection(VideoCamera()),mimetype='multipart/x-mixed-replace; boundary=frame')
+  return Response(motion_detection(VideoCamera()),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/status')
 def status():
-    cpu_temp = Sensor.getCPUtemperature()
+  cpu_temp = Sensor.getCPUtemperature()
+  total, used, free = Sensor.getDiskUsage()
 
-    total, used, free = Sensor.getDiskUsage()
-    total = bytesto(total,'g')
-    used = bytesto(used,'g')
-    free = bytesto(free,'g')
-    diskUsage = {"total":total, "used": used,"free": free}
+  total = bytesto(total,'g')
+  used = bytesto(used,'g')
+  free = bytesto(free,'g')
 
-    return render_template('status.html',cpu_temp=cpu_temp, diskUsage=diskUsage)
+  diskUsage = {"total":total, "used": used,"free": free}
+  return render_template('status.html',cpu_temp=cpu_temp, diskUsage=diskUsage)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port='5000')
+  load_dotenv()
+  app.run(host='0.0.0.0',port='5000')
 
 #docker build -t cam:latest .
 #docker tag cam alexbenko/cam && docker push alexbenko/cam
