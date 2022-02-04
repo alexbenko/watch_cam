@@ -3,7 +3,7 @@
   Using OpenCv and Flask I am able to "live stream" a usb camera connected to my Raspberry Pi. Really just continuously grabs the current frame from the camera as an image and updates it on the front end. I am working on a way to save these images and convert them to a video when desired. Currently only the server in the watch_cam folder works on the my Pi and has face detection as well. The threaded_watch_cam works on my MacBook Pro 2019 though and has motion detection.
 </p>
 
-<p>I have set up a docker container pushed to Dockerhub. See bellow on everything you need set up.</p>
+<p>I have set up a docker container pushed to Dockerhub. See below on everything you need set up.</p>
 
 
 <ul>
