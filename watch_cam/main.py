@@ -8,16 +8,16 @@ def bytesto(bytes, to, bsize=1024):
     r = float(bytes)
     return math.floor(bytes / (bsize ** a[to]))
 
-def motion_detection(camera):
-    while True:
-        base = camera.detect_motion()
-        frame = camera.detect_motion(base)
-        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
 def face_detection(camera):
     while True:
         frame = camera.detect_human_faces()
         yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+def motion_detection(camera):
+  while True:
+    frame = camera.detect_motion()
+    yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
 
 app = Flask(__name__)
 
