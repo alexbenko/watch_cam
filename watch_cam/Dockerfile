@@ -19,6 +19,7 @@ ENV LC_ALL en_US.UTF-8
 COPY ./requirements.txt ./requirements.txt
 RUN pip3 install -r requirements.txt
 
+ENV TZ="America/Denver"
 COPY . .
 EXPOSE 5000
 
