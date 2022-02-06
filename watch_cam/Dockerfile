@@ -11,6 +11,10 @@ RUN apt-get update \
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN apt-get install -y locales
 
+RUN apt-get install sox -y
+RUN apt-get install libsox-fmt-mp3 -y
+RUN apt-get install python3-gst-1.0 -y
+
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
