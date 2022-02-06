@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pi Stats</title>
-</head>
-<body style="background-color: #1f1f1f;color: #bfbfbf;">
+{% extends "base.html" %}
+{% block title %}Status{% endblock %}
+{% block content %}
   <h1>Info About the Pi</h1>
   <ul>
     <li>CPU Temperature (Celcius): {{ cpu_temp }}</li>
@@ -13,5 +8,4 @@
     <li>Disk Space Available: {{ diskUsage.free }} Gb</li>
     <li>Disk Space Used: {{ diskUsage.used }} Gb</li>
   </ul>
-</body>
-</html>
+{% endblock %}

@@ -1,19 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ app_title }}</title>
-</head>
-<script>
-  function removeLoadingText(){
-    const text = document.getElementById("loading");
-    text.remove()
-  }
-</script>
-<body style="background-color: #1f1f1f;color: #bfbfbf;">
+{% extends "base.html" %}
+{% block title %}{{app_title}}{% endblock %}
+{% block head %}
+  {{ super() }}
+  <script>
+    function removeLoadingText(){
+      const text = document.getElementById("loading");
+      text.remove()
+    }
+  </script>
+{% endblock %}
+{% block content %}
   <h1>{{ app_title }}</h1>
   <img id="live-stream"  onload="removeLoadingText()" src="{{ url_for('video_feed') }}" style="display: block; margin-left: auto; margin-right: auto; width: 65%; height: auto;">
   <p id="loading">Starting Camera ...</p>
-</body>
-</html>
+{% endblock %}
