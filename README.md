@@ -13,5 +13,5 @@
 </ul>
 
 # Usage
-<p>First ensure you are running Ubuntu (or at least an arm64 distro) on A Raspberry Pi4, have docker and docker-compose installed, have a USB camera attatched, and a speaker if you want to play audio. I set up a docker-compose file since it was getting complex enough that my docker run command was getting really long. Copy and paste my compose file and change anything specific to your needs. </p>
+<p>First ensure you are running Ubuntu (or at least an arm64 distro) on A Raspberry Pi4, have docker and docker-compose installed, have a USB camera attatched, and a speaker if you want to play audio. I set up a docker-compose file since it was getting complex enough that my docker run command was getting really long. Copy and paste my compose file and change anything specific to your needs. You can find it at https://github.com/alexbenko/watch_cam/blob/main/watch_cam/docker-compose.yaml</p>
 
