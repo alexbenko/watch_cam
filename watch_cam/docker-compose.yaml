@@ -4,9 +4,11 @@ services:
     image: alexbenko/cam:latest
     volumes:
       - ./audio:/audio
+      - ./recordings:/recordings
     environment:
-      appTitle: Watch Cam
+      app_title: Watch Cam
       PORT: 5000
+      save_images: True
     ports:
       - "5000:5000"
     devices:
