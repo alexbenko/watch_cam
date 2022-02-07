@@ -28,6 +28,6 @@
 <p>If everything is set up correctly, you should see this web-page</p>
 <img src="https://github.com/alexbenko/watch_cam/blob/main/gh/index.png"></img>
 
-<p>Demo of Motion Detector</p>
+<p>Demo of Motion Detector (slowed down)</p>
 <img src="https://github.com/alexbenko/watch_cam/blob/main/gh/output.gif"/>
 
