@@ -29,5 +29,5 @@
 <img src="https://github.com/alexbenko/watch_cam/blob/main/gh/index.png"></img>
 
 <p>Demo of Motion Detector</p>
-[![Demo Watch Cam](https://github.com/alexbenko/watch_cam/blob/main/gh/output.gif)]
+![Demo Watch Cam](https://github.com/alexbenko/watch_cam/blob/main/gh/output.gif)
 
