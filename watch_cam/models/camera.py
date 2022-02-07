@@ -9,8 +9,8 @@ import numpy as np
 face_cascade=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 ds_factor=0.6
 class VideoCamera(object):
-	images_folder_path= './recordings'
-	save_images = False
+	images_folder_path= '/recordings'
+	save_images = bool(os.getenv('save_images'))
 	accumWeight=0.5
 	bg = None
 	outputFrame = None
@@ -106,6 +106,7 @@ class VideoCamera(object):
 		return (thresh, (minX, minY, maxX, maxY))
 
 	def detect_motion(self,frameCount=32):
+		motion_detected  = False
 		#requires use of self.find_motion and self.update_background
 		ret, frame = self.video.read()
 		frame = imutils.resize(frame, width=400)
@@ -122,6 +123,7 @@ class VideoCamera(object):
 			motion = self.find_motion(gray)
 			# check to see if motion was found in the frame
 			if motion is not None:
+				motion_detected = True
 				# unpack the tuple and draw the box surrounding the
 				# "motion area" on the output frame
 				(thresh, (minX, minY, maxX, maxY)) = motion
@@ -132,7 +134,7 @@ class VideoCamera(object):
 		self.update_background(gray)
 		self.total += 1
 		ret, jpeg = cv2.imencode('.jpg', frame)
-		if self.save_images:
+		if self.save_images and motion_detected:
 			self.save_image(frame)
 		return jpeg.tobytes()
 
