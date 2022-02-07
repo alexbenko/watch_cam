@@ -27,3 +27,7 @@
 
 <p>If everything is set up correctly, you should see this web-page</p>
 <img src="https://github.com/alexbenko/watch_cam/blob/main/gh/index.png"></img>
+
+<p>Demo of Motion Detector</p>
+[![Demo Watch Cam](https://github.com/alexbenko/watch_cam/blob/main/gh/output.gif)]
+
