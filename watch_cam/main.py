@@ -1,10 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, Response
-from models import Sensor,VideoCamera
+from flask import Flask, render_template, Response,request,abort,jsonify
+from models import Sensor,VideoCamera,Speaker
 import math
 from dotenv import load_dotenv
 import os
+
+app_title = os.getenv('appTitle') or 'Cam'
 
 def bytesto(bytes, to, bsize=1024):
   a = {'k' : 1, 'm': 2, 'g' : 3, 't' : 4, 'p' : 5, 'e' : 6 }
@@ -26,11 +28,24 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-  app_title = os.getenv('appTitle')
   return render_template('index.html', app_title=app_title)
 
-@app.route('/video_feed')
+@app.route('/cam/<mode>')
+def cam(mode):
+  audio_files = [file for file in os.listdir('/audio') if img.endswith(".mp3")]
+  if mode == 'face':
+    return render_template('cam.html', app_title=app_title, stream_url='face_feed', audio_files=audio_files)
+  elif mode == 'motion':
+    return render_template('cam.html', app_title=app_title, stream_url='motion_feed',audio_files=audio_files)
+  else:
+    return '<img src="https://http.cat/400"></img>'
+
+@app.route('/face_feed')
 def video_feed():
+  return Response(face_detection(VideoCamera()),mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route("/motion_feed")
+def motion_feed():
   return Response(motion_detection(VideoCamera()),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/status')
@@ -38,12 +53,15 @@ def status():
   cpu_temp = Sensor.getCPUtemperature()
   total, used, free = Sensor.getDiskUsage()
 
-  total = bytesto(total,'g')
-  used = bytesto(used,'g')
-  free = bytesto(free,'g')
-
-  diskUsage = {"total":total, "used": used,"free": free}
+  diskUsage = {"total":bytesto(total,'g'), "used": bytesto(used,'g'),"free": bytesto(free,'g')}
   return render_template('status.html',cpu_temp=cpu_temp, diskUsage=diskUsage)
+
+@app.route('/play/<file>', methods = ['GET','POST'])
+def play(file):
+  Speaker.play(f'/audio/{file}')
+  resp = jsonify(success=True)
+  resp.status_code = 200
+  return resp
 
 if __name__ == '__main__':
   load_dotenv()
@@ -51,4 +69,4 @@ if __name__ == '__main__':
 
 #docker build -t cam:latest .
 #docker tag cam alexbenko/cam && docker push alexbenko/cam
-#sudo docker run --device /dev/video0 -p 5000:5000 alexbenko/cam
+#sudo docker run --device /dev/video0 --device /dev/snd -p 5000:5000 alexbenko/cam
