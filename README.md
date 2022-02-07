@@ -23,3 +23,5 @@
   <li><p>Type: </p> <code>sudo docker-compose up </code></li>
   <li><p>If everything is set type in your browser: [your pis local IP address]:5000/</p></li>
 </ol>
+
+<p>If everything is set up correctly, you should see this web-page</p>
