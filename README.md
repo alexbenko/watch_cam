@@ -13,7 +13,7 @@
 </ul>
 
 # Usage
-<p>My docker-compose file is at: https://github.com/alexbenko/watch_cam/blob/main/watch_cam/docker-compose.yaml</p>
+<p>My docker-compose file is  <a target="_blank" rel="noopener noreferrer" href="https://github.com/alexbenko/watch_cam/blob/main/watch_cam/docker-compose.yaml">Here</a></p>
 
 <ol>
   <li><p>First ensure you are running Ubuntu (or at least an arm64 distro) on A Raspberry Pi4</p></li>
