@@ -18,7 +18,7 @@
 <ol>
   <li><p>First ensure you are running Ubuntu (or at least an arm64 distro) on A Raspberry Pi4</p></li>
   <li><p>Install Docker and Docker-Compose</p></li>
-  <li><p>Attatch a USB camera(required) and attatch a speaker (optional)/p></li>
+  <li><p>Attatch a USB camera(required) and attatch a speaker (optional)</p></li>
   <li><p>Copy the docker-compose file to wherever you want to run it and change.</p></li>
   <li><p>Type: </p> <code>sudo docker-compose up </code></li>
   <li><p>If everything is set type in your browser: [your pis local IP address]:5000/</p></li>
