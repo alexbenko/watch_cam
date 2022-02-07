@@ -32,7 +32,7 @@ def index():
 
 @app.route('/cam/<mode>')
 def cam(mode):
-  audio_files = [file for file in os.listdir('/audio') if img.endswith(".mp3")]
+  audio_files = [file for file in os.listdir('/audio') if file.endswith(".mp3")]
   if mode == 'face':
     return render_template('cam.html', app_title=app_title, stream_url='face_feed', audio_files=audio_files)
   elif mode == 'motion':
