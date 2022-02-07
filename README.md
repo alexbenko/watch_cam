@@ -14,24 +14,4 @@
 
 # Usage
 <p>First ensure you are running Ubuntu (or at least an arm64 distro) on A Raspberry Pi4, have docker and docker-compose installed, have a USB camera attatched, and a speaker if you want to play audio. I set up a docker-compose file since it was getting complex enough that my docker run command was getting really long. Copy and paste my compose file and change anything specific to your needs. </p>
-<code>
-  version: "3"
-  services:
-    app:
-      image: alexbenko/cam:latest
-      volumes:
-        - ./audio:/audio
-        - ./recordings:/recordings
-      environment:
-        app_title: Watch Cam
-        PORT: 5000
-        save_images: True
-      ports:
-        - "5000:5000"
-      devices:
-        - /dev/video0:/dev/video0
-        - /dev/snd:/dev/snd
-      command: python3 main.py
-      restart: unless-stopped
-</code>
 
