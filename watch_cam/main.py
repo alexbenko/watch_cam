@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, Response,request,abort,jsonify
+from flask import Flask, render_template, Response,request,abort,jsonify,send_from_directory
 from models import Sensor,VideoCamera,Speaker
 import math
 from dotenv import load_dotenv
@@ -24,7 +24,7 @@ def motion_detection(camera):
     yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='/static')
 
 @app.route('/')
 def index():
@@ -32,7 +32,7 @@ def index():
 
 @app.route('/cam/<mode>')
 def cam(mode):
-  audio_files = [file for file in os.listdir('/audio') if file.endswith(".mp3")]
+  audio_files = []#[file for file in os.listdir('/audio') if file.endswith(".mp3")]
   if mode == 'face':
     return render_template('cam.html', app_title=app_title, stream_url='face_feed', audio_files=audio_files)
   elif mode == 'motion':
@@ -58,10 +58,19 @@ def status():
 
 @app.route('/play/<file>', methods = ['GET','POST'])
 def play(file):
-  Speaker.play(f'/audio/{file}')
-  resp = jsonify(success=True)
-  resp.status_code = 200
-  return resp
+  try:
+    Speaker.play(f'/audio/{file}')
+    resp = jsonify(success=True)
+    resp.status_code = 200
+    return resp
+  except:
+    resp = jsonify(success=False)
+    resp.status_code = 400
+    return resp
+
+@app.route('/js/<path:path>')
+def send_js(path):
+    return send_from_directory('js', path)
 
 if __name__ == '__main__':
   load_dotenv()
