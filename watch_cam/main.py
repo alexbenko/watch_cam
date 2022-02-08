@@ -32,7 +32,7 @@ def index():
 
 @app.route('/cam/<mode>')
 def cam(mode):
-  audio_files = []#[file for file in os.listdir('/audio') if file.endswith(".mp3")]
+  audio_files = [file for file in os.listdir('/audio') if file.endswith(".mp3")]
   if mode == 'face':
     return render_template('cam.html', app_title=app_title, stream_url='face_feed', audio_files=audio_files)
   elif mode == 'motion':
@@ -56,7 +56,7 @@ def status():
   diskUsage = {"total":bytesto(total,'g'), "used": bytesto(used,'g'),"free": bytesto(free,'g')}
   return render_template('status.html',cpu_temp=cpu_temp, diskUsage=diskUsage)
 
-@app.route('/play/<file>', methods = ['GET','POST'])
+@app.route('/play/<file>', methods = ['POST'])
 def play(file):
   try:
     Speaker.play(f'/audio/{file}')
