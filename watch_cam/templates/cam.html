@@ -16,13 +16,14 @@
       req.then(res => console.log(res))
     }
   </script>
+  <link rel="stylesheet" href="/static/css/recorder.css">
 {% endblock %}
 {% block content %}
   <h1>{{ app_title }}</h1>
   <img id="live-stream"  onload="removeLoadingText()" src="{{ url_for(stream_url) }}" style="display: block; margin-left: auto; margin-right: auto; width: 60%; height: 90%;">
   <p id="loading">Starting Camera ...</p>
   {% if audio_files %}
-  <div style="display: flex; flex-direction: column;">
+  <div style="display: flex; flex-direction: column; padding-bottom: 1rem;">
     <h2>Sounds To Play:</h2>
     <div style="flex-direction: row">
     {% for file in audio_files%}
@@ -31,4 +32,16 @@
     </div>
   </div>
   {% endif %}
+  <!--<div>
+    <h2>Record Your Own Audio</h2>
+    <div style="display: flex; flex-direction: row;">
+      <button id=start-record class="record">Start</button>
+      <button id="stop-record" disabled class="stop-record">Stop</button>
+    </div>
+    <div>
+      <audio id="recorded-audio"></audio>
+    </div>
+  </div>-->
+  <!--<script src="https://cdn.jsdelivr.net/npm/audio-recorder-polyfill/index.js" type="module"></script>
+  <script src="/static/js/recorder.js"></script>-->
 {% endblock %}
