@@ -17,6 +17,6 @@ services:
     command: python3 main.py
     restart: unless-stopped
     env_file: .env
-  mongo:
-    image: arm64v8/mongo
-    env_file: .env
+  #mongo:
+    #image: arm64v8/mongo
+    #env_file: .env
