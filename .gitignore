@@ -136,3 +136,4 @@ opencv_annotation --annotations=/file.txt --images=/photos
 watch_cam/dog.xml
 watch_cam/models/photos
 watch_cam/recordings
+threaded_watch_cam
