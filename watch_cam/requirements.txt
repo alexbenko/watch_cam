@@ -5,3 +5,4 @@ gpiozero
 RPi.GPIO
 numpy
 imutils
+pymongo
