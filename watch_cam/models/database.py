@@ -30,7 +30,7 @@ class Database(object):
     if len(ips) == 0:
       with open('../data/ips.json') as file:
         file_data = json.load(file)
-        banned_ips.insert_many(file_data)
+      banned_ips.insert_many(file_data)
     else:
       print('Data exisits, no need to seed!')
 
