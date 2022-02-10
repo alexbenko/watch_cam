@@ -39,7 +39,7 @@ def hook():
   if matching_ip is None:
     return
   else:
-    return error_responses["400"]
+    return error_responses["400"], 400
 
 @app.route('/')
 def index():
@@ -93,13 +93,15 @@ def ban():
   ip = request.remote_addr
   mongo = Database()
   mongo.ban_ip(ip)
-  return error_responses["400"]
+  return error_responses["400"], 400
 
 if __name__ == '__main__':
   load_dotenv()
   print("Checking if seed is necesary ...")
   mongo = Database()
   mongo.seed_ips()
+  local_access_only = os.getenv("local_access_only", False)
+  print(f'Allow outside access: {not local_access_only}')
   app.run(host='0.0.0.0',port='5000')
 
 #docker build -t cam:latest .
