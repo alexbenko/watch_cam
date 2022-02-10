@@ -31,5 +31,9 @@
 <img src="https://github.com/alexbenko/watch_cam/blob/main/gh/index.png"></img>
 
 <p>Demo of Motion Detector (slowed down)</p>
-https://user-images.githubusercontent.com/37863173/153511277-2a334e94-6d73-4019-a95a-5eaccb6a0a3e.mp4
+
+
+https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-9e3c-1343e66033fa.mp4
+
+
 
