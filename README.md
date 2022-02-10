@@ -20,6 +20,7 @@
   <li><p>Install Docker and Docker-Compose</p></li>
   <li><p>Attatch a USB camera(required) and attatch a speaker (optional)</p></li>
   <li><p>Copy the docker-compose file to wherever you want to run it and change any environment variables, etc.</p></li>
+  <li><p>Look at my compose file for reference, create a .env file in the same directory as your docker-compose file.</p></li>
   <li><p>Type: </p> <code>sudo docker-compose up </code></li>
   <li><p>If everything is set type in your browser: [your pis local IP address]:5000/</p></li>
   <li><p>If you want to play audio, put desired .mp3 files into the /recordings and buttons will appear in either detector.</p></li>
