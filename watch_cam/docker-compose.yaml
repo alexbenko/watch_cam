@@ -5,6 +5,7 @@ services:
     volumes:
       - ./audio:/audio
       - ./recordings:/recordings
+      - ./.env:/.env
     env_file: .env
     environment:
       app_title: Watch Cam
@@ -28,4 +29,5 @@ services:
     logging:
       driver: none
     volumes:
-      - /data/mongo:/data/db
+      - ./data2/mongo:/data/db
+      - ./.env:/.env
