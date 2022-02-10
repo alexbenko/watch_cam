@@ -38,3 +38,11 @@ class Database(object):
   def get_one(self, collection, value):
     collection = self.client[self.db_name][collection]
     return collection.find_one(value)
+
+  def ban_ip(self, ip):
+    if ip == '127.0.0.1':
+      print("local ip...")
+      return
+    ip_collection = self.client[self.db_name]["ips"]
+    ip_collection.insert_one({"ip": ip})
+    print(f"Banned IP: {ip}")
