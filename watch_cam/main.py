@@ -5,6 +5,7 @@ from models import Sensor,VideoCamera,Speaker, Database
 import math
 from dotenv import load_dotenv
 import os
+from funcs import sms
 
 app_title = os.getenv('app_title') or 'Cam'
 
@@ -27,18 +28,18 @@ def motion_detection(camera):
     frame = camera.detect_motion()
     yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-
 app = Flask(__name__,static_url_path='/static')
 
 @app.before_request
-def hook():
+def check_if_ip_banned():
   ip = request.remote_addr
-  print(ip)
   mongo = Database()
   matching_ip = mongo.get_one("ips", {"ip": ip})
+
   if matching_ip is None:
     return
   else:
+    sms.send("Attempt from banned ip address " + str(ip))
     return error_responses["400"], 400
 
 @app.route('/')
@@ -100,8 +101,8 @@ if __name__ == '__main__':
   print("Checking if seed is necesary ...")
   mongo = Database()
   mongo.seed_ips()
-  local_access_only = os.getenv("local_access_only", False)
-  print(f'Allow outside access: {not local_access_only}')
+  local_access_only = os.getenv("local_access_only", "False").lower() in ('true', '1', 't')
+  print(f'Only local access: {local_access_only}')
   app.run(host='0.0.0.0',port='5000')
 
 #docker build -t cam:latest .
