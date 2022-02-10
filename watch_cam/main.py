@@ -11,6 +11,7 @@ app_title = os.getenv('app_title') or 'Cam'
 error_responses = {
   "400": '<img src="https://http.cat/400"></img>'
 }
+
 def bytesto(bytes, to, bsize=1024):
   a = {'k' : 1, 'm': 2, 'g' : 3, 't' : 4, 'p' : 5, 'e' : 6 }
   r = float(bytes)
@@ -31,12 +32,11 @@ app = Flask(__name__,static_url_path='/static')
 
 @app.before_request
 def hook():
-  print("BEFORE EACH REQUEST")
-  print(request.remote_addr)
+  ip = request.remote_addr
+  print(ip)
   mongo = Database()
-  matching_ip = mongo.get_one("ips", {"ip": request.remote_addr})
+  matching_ip = mongo.get_one("ips", {"ip": ip})
   if matching_ip is None:
-    print("ip is not banned")
     return
   else:
     return error_responses["400"]
@@ -86,6 +86,14 @@ def play(file):
 @app.route('/js/<path:path>')
 def send_js(path):
     return send_from_directory('js', path)
+
+# just a honeypot. /admin is one of the most commons endpoints bots will try to access. easy way to get them all banned
+@app.route('/admin')
+def ban():
+  ip = request.remote_addr
+  mongo = Database()
+  mongo.ban_ip(ip)
+  return error_responses["400"]
 
 if __name__ == '__main__':
   load_dotenv()
