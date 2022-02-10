@@ -11,7 +11,6 @@ face_cascade=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 ds_factor=0.6
 class VideoCamera(object):
 	images_folder_path= '/recordings'
-	save_images = bool(os.getenv('save_images'))
 	accumWeight=0.5
 	bg = None
 	outputFrame = None
@@ -19,6 +18,7 @@ class VideoCamera(object):
 
 	def __init__(self,):
 		self.video = cv2.VideoCapture(0)
+		self.save_images = os.getenv('save_images').lower() in ('true', '1', 't')
 
 	def __del__(self):
 		self.video.release()

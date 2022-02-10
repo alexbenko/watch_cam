@@ -17,7 +17,7 @@ def send(message):
 	if not number or not email or not email_password or not carrier:
 		raise Exception("SMS environment variables not set...")
 
-	to_number = number + '{}'.format(carriers['att'])
+	to_number = number + '{}'.format(carriers[carrier])
 	auth = (email, email_password)
 
 	# Establish a secure session with gmail's outgoing SMTP server using your gmail account

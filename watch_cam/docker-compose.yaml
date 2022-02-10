@@ -15,6 +15,8 @@ services:
       MONGODB_USERNAME: ${MONGODB_USERNAME}
       MONGODB_PASSWORD: ${MONGODB_PASSWORD}
       MONGODB_HOSTNAME: mongodb
+      PYTHONUNBUFFERED: 1 #for some reason docker suppresed any prints beyond the start up ones, this disables that
+      local_access_only: "True"
     ports:
       - "5000:5000"
     devices:
@@ -25,8 +27,6 @@ services:
       - mongodb
   mongodb:
     image: arm64v8/mongo:4.4
-    logging:
-      driver: none
     env_file: .env
     volumes:
       - ./data2/mongo:/data/db
