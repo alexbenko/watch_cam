@@ -30,8 +30,7 @@
 <p>If everything is set up correctly, you should see this web-page</p>
 <img src="https://github.com/alexbenko/watch_cam/blob/main/gh/index.png"></img>
 
-<p>Demo of Motion Detector (slowed down)</p>
-
+<p>Demo of Motion Detector</p>
 
 https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-9e3c-1343e66033fa.mp4
 
