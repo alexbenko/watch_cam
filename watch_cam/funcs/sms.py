@@ -11,6 +11,8 @@ carriers = {
 def send(message):
 	load_dotenv()
 	number = os.getenv("PHONE_NUMBER")
+	if not number:
+		raise Exception("SMS environment variables not set...")
 
 	to_number = number + '{}'.format(carriers['att'])
 	auth = (os.getenv("EMAIL"), os.getenv("EMAIL_PASSWORD"))
