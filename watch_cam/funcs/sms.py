@@ -6,14 +6,12 @@ carriers = {
 	'att':    '@mms.att.net',
 	'tmobile':' @tmomail.net',
 	'verizon':  '@vtext.com',
-	'sprint':   '@page.nextel.com'
 }
 #all major carries typically assign you an email address that is <your number>@<carrierdomain>. sending an email to it will forward it to the number as a text
 def send(message):
 	load_dotenv()
 	number = os.getenv("PHONE_NUMBER")
 
-  # Replace the number with your own, or consider using an argument\dict for multiple people.
 	to_number = number + '{}'.format(carriers['att'])
 	auth = (os.getenv("EMAIL"), os.getenv("EMAIL_PASSWORD"))
 
