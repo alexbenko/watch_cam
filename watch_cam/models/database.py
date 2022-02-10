@@ -40,7 +40,8 @@ class Database(object):
     return collection.find_one(value)
 
   def ban_ip(self, ip):
-    if ip == '127.0.0.1':
+    local_access_only = os.getenv("local_access_only", False)
+    if ip == '127.0.0.1' or (local_access_only and ip.split(".")[0] == "10"):
       print("local ip...")
       return
     ip_collection = self.client[self.db_name]["ips"]
