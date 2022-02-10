@@ -25,9 +25,9 @@ services:
       - mongodb
   mongodb:
     image: arm64v8/mongo:4.4
-    env_file: .env
     logging:
       driver: none
+    env_file: .env
     volumes:
       - ./data2/mongo:/data/db
       - ./.env:/.env

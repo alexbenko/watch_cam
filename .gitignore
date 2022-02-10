@@ -137,3 +137,5 @@ watch_cam/dog.xml
 watch_cam/models/photos
 watch_cam/recordings
 threaded_watch_cam
+watch_cam/data
+watch_cam/audio/
