@@ -11,11 +11,14 @@ carriers = {
 def send(message):
 	load_dotenv()
 	number = os.getenv("PHONE_NUMBER")
-	if not number:
+	email = os.getenv("EMAIL")
+	email_password = os.getenv("EMAIL_PASSWORD")
+	carrier = os.getenv("CARRIER")
+	if not number or not email or not email_password or not carrier:
 		raise Exception("SMS environment variables not set...")
 
 	to_number = number + '{}'.format(carriers['att'])
-	auth = (os.getenv("EMAIL"), os.getenv("EMAIL_PASSWORD"))
+	auth = (email, email_password)
 
 	# Establish a secure session with gmail's outgoing SMTP server using your gmail account
 	server = smtplib.SMTP( "smtp.gmail.com", 587 )
