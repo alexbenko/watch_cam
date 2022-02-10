@@ -1,13 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, Response,request,abort,jsonify,send_from_directory
-from models import Sensor,VideoCamera,Speaker
+from flask import Flask, render_template, Response,request,abort,jsonify,send_from_directory,request
+from models import Sensor,VideoCamera,Speaker, Database
 import math
 from dotenv import load_dotenv
 import os
 
 app_title = os.getenv('app_title') or 'Cam'
 
+error_responses = {
+  "400": '<img src="https://http.cat/400"></img>'
+}
 def bytesto(bytes, to, bsize=1024):
   a = {'k' : 1, 'm': 2, 'g' : 3, 't' : 4, 'p' : 5, 'e' : 6 }
   r = float(bytes)
@@ -26,19 +29,31 @@ def motion_detection(camera):
 
 app = Flask(__name__,static_url_path='/static')
 
+@app.before_request
+def hook():
+  print("BEFORE EACH REQUEST")
+  print(request.remote_addr)
+  mongo = Database()
+  matching_ip = mongo.get_one("ips", {"ip": request.remote_addr})
+  if matching_ip is None:
+    print("ip is not banned")
+    return
+  else:
+    return error_responses["400"]
+
 @app.route('/')
 def index():
   return render_template('index.html', app_title=app_title)
 
 @app.route('/cam/<mode>')
 def cam(mode):
-  audio_files = [file for file in os.listdir('/audio') if file.endswith(".mp3")]
+  audio_files = [file for file in os.listdir('./audio') if file.endswith(".mp3")]
   if mode == 'face':
     return render_template('cam.html', app_title=app_title, stream_url='face_feed', audio_files=audio_files)
   elif mode == 'motion':
     return render_template('cam.html', app_title=app_title, stream_url='motion_feed',audio_files=audio_files)
   else:
-    return '<img src="https://http.cat/400"></img>'
+    return error_responses["404"]
 
 @app.route('/face_feed')
 def video_feed():
@@ -74,6 +89,9 @@ def send_js(path):
 
 if __name__ == '__main__':
   load_dotenv()
+  print("Checking if seed is necesary ...")
+  mongo = Database()
+  mongo.seed_ips()
   app.run(host='0.0.0.0',port='5000')
 
 #docker build -t cam:latest .
