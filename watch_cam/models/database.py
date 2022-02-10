@@ -2,6 +2,7 @@ from pymongo import MongoClient,DESCENDING
 import os
 from dotenv import load_dotenv
 import json
+from funcs import sms
 class Database(object):
   def __init__(self):
     try:
@@ -40,10 +41,13 @@ class Database(object):
     return collection.find_one(value)
 
   def ban_ip(self, ip):
-    local_access_only = os.getenv("local_access_only", False)
-    if ip == '127.0.0.1' or (local_access_only and ip.split(".")[0] == "10"):
-      print("local ip...")
-      return
-    ip_collection = self.client[self.db_name]["ips"]
-    ip_collection.insert_one({"ip": ip})
-    print(f"Banned IP: {ip}")
+    local_access_only = os.getenv("local_access_only", "False").lower() in ('true', '1', 't')
+    if local_access_only:
+      if ip == '127.0.0.1' or ip.split(".")[0] == "10":
+        print("local ip...")
+        return
+    else:
+      ip_collection = self.client[self.db_name]["ips"]
+      ip_collection.insert_one({"ip": ip})
+      print(f"Banned IP: {ip}")
+      sms.send(f"Banned IP: {ip}")
