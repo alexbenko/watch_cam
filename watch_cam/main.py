@@ -102,9 +102,12 @@ if __name__ == '__main__':
   mongo = Database()
   mongo.seed_ips()
   local_access_only = os.getenv("local_access_only", "False").lower() in ('true', '1', 't')
-  print(f'Only local access: {local_access_only}')
-  timestamp = datetime.datetime.now()
+  save_images = os.getenv("save_images", "False").lower() in ('true', '1', 't')
 
+  print(f'Only local access: {local_access_only}')
+  print(f'Save images: {save_images}')
+
+  timestamp = datetime.datetime.now()
   sms.send(f"Server started at {timestamp}")
   app.run(host='0.0.0.0',port='5000')
 
