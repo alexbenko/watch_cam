@@ -18,7 +18,7 @@ class VideoCamera(object):
 
 	def __init__(self,):
 		self.video = cv2.VideoCapture(0)
-		self.save_images = os.getenv('save_images', False).lower() in ('true', '1', 't')
+		self.save_images = os.getenv('save_images', "False").lower() in ('true', '1', 't')
 
 	def __del__(self):
 		self.video.release()
