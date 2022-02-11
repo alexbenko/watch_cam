@@ -20,7 +20,7 @@
   <li><p>Install Docker and Docker-Compose</p></li>
   <li><p>Attatch a USB camera(required) and attatch a speaker (optional)</p></li>
   <li><p>Copy the docker-compose file to wherever you want to run it and change any environment variables, etc.</p></li>
-  <li><p>Look at my compose file for reference, create a .env file in the same directory as your docker-compose file.</p></li>
+  <li><p>Look at my compose file for reference, create a .env (look bellow for all that you can set) file in the same directory as your docker-compose file.</p></li>
   <li><p>Type: </p> <code>sudo docker-compose up </code></li>
   <li><p>If everything is set type in your browser: [your pis local IP address]:5000/</p></li>
   <li><p>If you want to play audio, put desired .mp3 files into the /recordings and buttons will appear in either detector.</p></li>
@@ -36,3 +36,21 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
 
 
 
+# Enviornment Variables to set
+<p>There are a good amount of environment variables to set. Some arent that private and can be set in your compose file but others are more should be hidden in a .env file if it will be in a public </p>
+<br></br>
+<p>To set a boolean env true, the value can be True, T, or 1. Any other value will be false and if it is not set, all booleans default to false</p>
+<ul>
+  <li><code>app_title</code> - String - The name of the app displayed in the tab and various webpages. Defaults to 'Cam'. (optional)</li>
+  <li><code>save_images</code> -  Boolean- Whether or not the server will save the images it detects motion/faces in. (optional)</li>
+  <li><code>local_access_only</code> -  Boolean- Whether or not the server will accept requests from external IPs. Only necessary if the server is publicly accessible. (optional)</li>
+</ul>
+<p>The next variables should be hidden from public view. Right now no user/password set up</p>
+<ul>
+  <li><code>MONGODB_DATABASEe</code> - String - Name of your mongodb database.</li>
+  <li><code>MONGODB_HOSTNAME</code> - String - Name of your mongodb host for the connection string.</li>
+  <li><code>EMAIL</code> - String - Email you want to use to forward texts if you desire. Currently only works with Gmail (optional).</li>
+  <li><code>EMAIL_PASSWORD</code> - String - Password for your email account (required if you set EMAIL).</li>
+  <li><code>PHONE_NUMBER</code> - String - The phone number you want texts to be forwarded to. (required if you set EMAIL and EMAIL_PASSWORD)</li>
+  <li><code>CARRIER</code> - String - Name of your carrier. Currently only works with Verizon and AT&T. Valid options are 'att' or 'verizon' (required if you set EMAIL, EMAIL_PASSWORD, and PHONE_NUMBER)</li>
+</ul>
