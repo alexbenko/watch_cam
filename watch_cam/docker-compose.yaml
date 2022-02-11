@@ -18,6 +18,11 @@ services:
       MONGODB_HOSTNAME: mongodb
       PYTHONUNBUFFERED: 1 #for some reason docker suppresed any prints beyond the start up ones, this disables that
       local_access_only: "True"
+      EMAIL: ${EMAIL}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      PHONE_NUMBER: ${PHONE_NUMBER}
+      save_images: True
+      CARRIER: ${CARRIER}
     ports:
       - "5000:5000"
     devices:
