@@ -56,7 +56,7 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
 </ul>
 
 <p>Currently the only collection is of banned ips. To seed this collection, create a a file called <code>ips.json</code></p>
-<p>Put this file in a folder called data and put the folder in the same director as your compose file.</p>
+<p>Put this file in a folder called data and put the folder in the same directory as your compose file.</p>
 <p>The json file should be in the format:</p>
 </br>
 <code>
