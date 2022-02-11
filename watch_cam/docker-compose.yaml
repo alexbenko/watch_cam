@@ -6,6 +6,7 @@ services:
       - ./audio:/audio
       - ./recordings:/recordings
       - ./.env:/.env
+      - ./data:/data
     env_file: .env
     environment:
       app_title: Watch Cam
