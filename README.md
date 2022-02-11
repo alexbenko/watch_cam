@@ -41,6 +41,7 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
 <br></br>
 <p>To set a boolean env true, the value can be True, T, or 1. Any other value will be false and if it is not set, all booleans default to false</p>
 <ul>
-  <li><code>app_title</code> - String - The name of the app displayed in the tab and various webpages. (optional)</li>
+  <li><code>app_title</code> - String - The name of the app displayed in the tab and various webpages. Defaults to 'Cam'. (optional)</li>
   <li><code>save_images</code> -  Boolean- Whether or not the server will save the images it detects motion/faces in. (optional)</li>
+  <li><code>local_access_only</code> -  Boolean- Whether or not the server will accept requests from external IPs. Only necessary if the server is publicly accessible. (optional)</li>
 </ul>
