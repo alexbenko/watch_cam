@@ -6,7 +6,7 @@ import math
 from dotenv import load_dotenv
 import os
 from funcs import sms
-
+import datetime
 app_title = os.getenv('app_title') or 'Cam'
 
 error_responses = {
@@ -103,6 +103,9 @@ if __name__ == '__main__':
   mongo.seed_ips()
   local_access_only = os.getenv("local_access_only", "False").lower() in ('true', '1', 't')
   print(f'Only local access: {local_access_only}')
+  timestamp = datetime.datetime.now()
+
+  sms.send(f"Server started at {timestamp}")
   app.run(host='0.0.0.0',port='5000')
 
 #docker build -t cam:latest .
