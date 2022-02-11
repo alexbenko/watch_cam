@@ -6,6 +6,7 @@ import os
 import imutils
 import numpy as np
 import time
+from dotenv import load_dotenv
 
 face_cascade=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 ds_factor=0.6
@@ -17,6 +18,7 @@ class VideoCamera(object):
 	total = 0
 
 	def __init__(self,):
+		load_dotenv()
 		self.video = cv2.VideoCapture(0)
 		self.save_images = os.getenv('save_images', "False").lower() in ('true', '1', 't')
 
