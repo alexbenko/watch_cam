@@ -53,6 +53,7 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
   <li><code>EMAIL_PASSWORD</code> - String - Password for your email account (required if you set EMAIL).</li>
   <li><code>PHONE_NUMBER</code> - String - The phone number you want texts to be forwarded to. (required if you set EMAIL and EMAIL_PASSWORD)</li>
   <li><code>CARRIER</code> - String - Name of your carrier. Currently only works with Verizon and AT&T. Valid options are 'att' or 'verizon' (required if you set EMAIL, EMAIL_PASSWORD, and PHONE_NUMBER)</li>
+  <li><code>PYTHONUNBUFFERED</code> 0 or 1 - After the initial start up prints, all other prints in the app are ignored. Set this to 1 if you still want to see prints.</li>
 </ul>
 
 <p>Currently the only collection is of banned ips. To seed this collection, create a a file called <code>ips.json</code></p>
