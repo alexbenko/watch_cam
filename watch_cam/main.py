@@ -44,7 +44,7 @@ def check_if_ip_banned():
 
 @app.before_request
 def local_only():
-  local_access_only = os.getenv("local_access_only", "False").lower() in ('true', '1', 't')
+  local_access_only = os.getenv("local_access_only", False).lower() in ('true', '1', 't')
   ip = request.remote_addr
 
   if local_access_only and (ip == '127.0.0.1' or ip.split(".")[0] == "10"):
@@ -113,8 +113,8 @@ if __name__ == '__main__':
   print("Checking if seed is necesary ...")
   mongo = Database()
   mongo.seed_ips()
-  local_access_only = os.getenv("local_access_only", "False").lower() in ('true', '1', 't')
-  save_images = os.getenv("save_images", "False").lower() in ('true', '1', 't')
+  local_access_only = os.getenv("local_access_only", False).lower() in ('true', '1', 't')
+  save_images = os.getenv("save_images", False).lower() in ('true', '1', 't')
 
   print(f'Only local access: {local_access_only}')
   print(f'Save images: {save_images}')
