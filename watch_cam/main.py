@@ -42,6 +42,18 @@ def check_if_ip_banned():
     sms.send("Attempt from banned ip address " + str(ip))
     return error_responses["400"], 400
 
+@app.before_request
+def local_only():
+  local_access_only = os.getenv("local_access_only", "False").lower() in ('true', '1', 't')
+  ip = request.remote_addr
+
+  if local_access_only and (ip == '127.0.0.1' or ip.split(".")[0] == "10"):
+    return
+  elif not local_access_only:
+    return
+  else:
+    return error_responses["400"], 400
+
 @app.route('/')
 def index():
   return render_template('index.html', app_title=app_title)
