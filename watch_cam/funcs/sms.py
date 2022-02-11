@@ -19,11 +19,11 @@ def send(message):
 
 	to_number = number + '{}'.format(carriers[carrier])
 	auth = (email, email_password)
-
+	if ":" in message:
+		message = message.replace(":", " ") #colons cause the message to fail ¯\_(ツ)_/¯
 	# Establish a secure session with gmail's outgoing SMTP server using your gmail account
 	server = smtplib.SMTP( "smtp.gmail.com", 587 )
 	server.starttls()
 	server.login(auth[0], auth[1])
-
 	# Send text message through SMS gateway of destination number
 	server.sendmail( auth[0], to_number, message)
