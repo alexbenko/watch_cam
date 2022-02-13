@@ -7,6 +7,7 @@ services:
       - ./recordings:/recordings
       - ./.env:/.env
       - ./data:/data
+      - ./static:/static
     env_file: .env
     environment:
       app_title: Watch Cam
@@ -16,12 +17,12 @@ services:
       MONGODB_USERNAME: ${MONGODB_USERNAME}
       MONGODB_PASSWORD: ${MONGODB_PASSWORD}
       MONGODB_HOSTNAME: mongodb
-      PYTHONUNBUFFERED: 1 #for some reason docker suppresed any prints beyond the start up ones, this disables that
+      PYTHONUNBUFFERED: 1 #for some reason docker suppresed any prints beyond the start up ones, this enables prints in the docker container
       local_access_only: "True"
       EMAIL: ${EMAIL}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
       PHONE_NUMBER: ${PHONE_NUMBER}
-      save_images: True
+      save_images: "True"
       CARRIER: ${CARRIER}
     ports:
       - "5000:5000"
