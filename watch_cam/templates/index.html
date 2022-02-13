@@ -7,4 +7,14 @@
     <li><p><a style="color:inherit" href="/cam/face">Face Detection</a></p></li>
     <li><p><a style="color:inherit" href="/cam/motion">Motion Detection</a></p></li>
   </ul>
+  <br>
+  <div>
+    <h1>Pi Status: </h1>
+    <ul>
+      <li>CPU Temperature (Celcius): {{ cpu_temp }}</li>
+      <li>Total Disk Space: {{ diskUsage.total }} Gb</li>
+      <li>Disk Space Available: {{ diskUsage.free }} Gb</li>
+      <li>Disk Space Used: {{ diskUsage.used }} Gb</li>
+    </ul>
+  </div>
 {% endblock %}

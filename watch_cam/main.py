@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import os
 from funcs import sms
 import datetime
-app_title = os.getenv('app_title') or 'Cam'
+app_title = os.getenv('app_title', 'Cam')
 
 error_responses = {
   "400": '<img src="https://http.cat/400"></img>'
@@ -28,6 +28,7 @@ def motion_detection(camera):
     frame = camera.detect_motion()
     yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
+CAMERA = VideoCamera()
 app = Flask(__name__,static_url_path='/static')
 
 @app.before_request
@@ -56,7 +57,11 @@ def local_only():
 
 @app.route('/')
 def index():
-  return render_template('index.html', app_title=app_title)
+  cpu_temp = Sensor.getCPUtemperature()
+  total, used, free = Sensor.getDiskUsage()
+
+  diskUsage = {"total":bytesto(total,'g'), "used": bytesto(used,'g'),"free": bytesto(free,'g')}
+  return render_template('index.html', app_title=app_title,cpu_temp=cpu_temp, diskUsage=diskUsage)
 
 @app.route('/cam/<mode>')
 def cam(mode):
@@ -70,19 +75,11 @@ def cam(mode):
 
 @app.route('/face_feed')
 def video_feed():
-  return Response(face_detection(VideoCamera()),mimetype='multipart/x-mixed-replace; boundary=frame')
+  return Response(face_detection(CAMERA),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route("/motion_feed")
 def motion_feed():
-  return Response(motion_detection(VideoCamera()),mimetype='multipart/x-mixed-replace; boundary=frame')
-
-@app.route('/status')
-def status():
-  cpu_temp = Sensor.getCPUtemperature()
-  total, used, free = Sensor.getDiskUsage()
-
-  diskUsage = {"total":bytesto(total,'g'), "used": bytesto(used,'g'),"free": bytesto(free,'g')}
-  return render_template('status.html',cpu_temp=cpu_temp, diskUsage=diskUsage)
+  return Response(motion_detection(CAMERA),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/play/<file>', methods = ['POST'])
 def play(file):
@@ -92,13 +89,7 @@ def play(file):
     resp.status_code = 200
     return resp
   except:
-    resp = jsonify(success=False)
-    resp.status_code = 400
-    return resp
-
-@app.route('/js/<path:path>')
-def send_js(path):
-    return send_from_directory('js', path)
+    return abort(404)
 
 # just a honeypot. /admin is one of the most commons endpoints bots will try to access. easy way to get them all banned
 @app.route('/admin')
@@ -125,4 +116,3 @@ if __name__ == '__main__':
 
 #docker build -t cam:latest .
 #docker tag cam alexbenko/cam && docker push alexbenko/cam
-#sudo docker run --device /dev/video0 --device /dev/snd -p 5000:5000 alexbenko/cam
