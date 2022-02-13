@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, Response,request,abort,jsonify,send_from_directory,request
+from flask import Flask, render_template, Response,request,abort,jsonify,request,send_file
 from models import Sensor,VideoCamera,Speaker, Database
 import math
 from dotenv import load_dotenv
@@ -63,6 +63,21 @@ def index():
   diskUsage = {"total":bytesto(total,'g'), "used": bytesto(used,'g'),"free": bytesto(free,'g')}
   return render_template('index.html', app_title=app_title,cpu_temp=cpu_temp, diskUsage=diskUsage)
 
+@app.route('/videos')
+def list_videos():
+  days = [day for day in os.listdir('./recordings')]
+  daysWithPictures = []
+  for day in days:
+    count = len([pic for pic in os.listdir(f'./recordings/{day}') if pic.endswith(".png") ])
+    daysWithPictures.append({"name": day, "count": count})
+  return render_template('download_video.html', daysWithPictures=daysWithPictures, app_title=app_title)
+
+@app.route('/recordings/<path:file>')
+def download_video(file):
+  path = file.split("/")[1].split(".")[0]
+  video = CAMERA.createVideo(path)
+  return send_file(video)
+
 @app.route('/cam/<mode>')
 def cam(mode):
   audio_files = [file for file in os.listdir('./audio') if file.endswith(".mp3")]
@@ -89,7 +104,7 @@ def play(file):
     resp.status_code = 200
     return resp
   except:
-    return abort(404)
+    return abort(404),404
 
 # just a honeypot. /admin is one of the most commons endpoints bots will try to access. easy way to get them all banned
 @app.route('/admin')
