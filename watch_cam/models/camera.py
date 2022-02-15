@@ -7,6 +7,7 @@ import imutils
 import numpy as np
 import time
 from dotenv import load_dotenv
+import uuid
 
 face_cascade=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 ds_factor=0.6
@@ -32,25 +33,27 @@ class VideoCamera(object):
 		if(not os.path.isdir(todays_folder)): #if todays folder doesnt exist
 			os.makedirs(todays_folder,exist_ok = True) #create it
 
-		rn = int(time.time()) # simplest way to generate unique name for each frame
-		cv2.imwrite(f'{todays_folder}/{rn}.png', image)
+		rn = str(time.time()) # simplest way to generate unique name for each frame
+		name = uuid.uuid4().hex + rn
+		cv2.imwrite(f'{todays_folder}/{name}.png', image)
 
 	def createVideo(self, date):
 		#date is expected to be in: yyyy-mm-dd ie datetime.date.today()
 		image_folder = f'{self.images_folder_path}/{date}'
-		video_name = f'{self.images_folder_path}/{date}/{date}.avi'
+		video_path = f'{date}.avi'
+
+		video_path = os.path.join('static', video_path)
 
 		images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
 		frame = cv2.imread(os.path.join(image_folder, images[0]))
 		height, width, layers = frame.shape
 
-		video = cv2.VideoWriter(video_name, 0, 1, (width,height))
-
+		video = cv2.VideoWriter(video_path, 0, 1, (width,height))
 		for image in images:
 				video.write(cv2.imread(os.path.join(image_folder, image)))
+		time.sleep(0.3) #give the pi some time to save the video to prevent accidental 404s
+		return video_path
 
-		cv2.destroyAllWindows()
-		video.release()
 	def detect_human_faces(self):
 		#extracting frames
 		ret, frame = self.video.read()
