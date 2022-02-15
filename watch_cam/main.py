@@ -70,7 +70,8 @@ def list_videos():
   for day in days:
     count = len([pic for pic in os.listdir(f'./recordings/{day}') if pic.endswith(".png") ])
     daysWithPictures.append({"name": day, "count": count})
-  return render_template('download_video.html', daysWithPictures=daysWithPictures, app_title=app_title)
+  existing_videos = [vid for vid in os.listdir('./static') if vid.endswith(".avi")]
+  return render_template('download_video.html', daysWithPictures=daysWithPictures, app_title=app_title, existing_videos=existing_videos)
 
 @app.route('/recordings/<path:file>')
 def download_video(file):
