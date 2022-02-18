@@ -10,7 +10,8 @@ import datetime
 app_title = os.getenv('app_title', 'Cam')
 
 error_responses = {
-  "400": '<img src="https://http.cat/400"></img>'
+  "400": '<img src="https://http.cat/400"></img>',
+  "404": '<img src="https://http.cat/404"></img>'
 }
 
 def bytesto(bytes, to, bsize=1024):
@@ -87,7 +88,7 @@ def cam(mode):
   elif mode == 'motion':
     return render_template('cam.html', app_title=app_title, stream_url='motion_feed',audio_files=audio_files)
   else:
-    return error_responses["404"]
+    return error_responses["404"], 404
 
 @app.route('/face_feed')
 def video_feed():
