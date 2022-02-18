@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 
 carriers = {
 	'att':    '@mms.att.net',
-	'tmobile':' @tmomail.net',
 	'verizon':  '@vtext.com',
 }
 #all major carries typically assign you an email address that is <your number>@<carrierdomain>. sending an email to it will forward it to the number as a text
