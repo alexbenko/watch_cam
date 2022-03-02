@@ -32,7 +32,7 @@
   <li><p>Copy the docker-compose file to wherever you want to run it and change any environment variables, etc.</p></li>
   <li><p>Look at my compose file for reference, create a .env (look bellow for all that you can set) file in the same directory as your docker-compose file.</p></li>
   <li><p>Type: </p> <code>sudo docker-compose up </code></li>
-  <li><p>If everything is set type in your browser: <your pis local IP address>:<your specified port env , defaults to 5000>/</p></li>
+  <li><p>If everything is set type in your browser: [your pis local IP address]:[your specified port env]/</p></li>
   <li><p>If you want to play audio, put desired .mp3 files into the /recordings in the same directory as your compose file and buttons will appear in either detector.</p></li>
 </ol>
 <br></br>
