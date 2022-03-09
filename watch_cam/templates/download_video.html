@@ -6,7 +6,7 @@
 <h1>Days with a video</h1>
 <ol>
   {% for d in daysWithPictures%}
-  <li><a download href="/recordings/{{d.name}}/{{d.name}}.avi" class="download">{{d.name}}</a> - {{ d.count }} frames of detected motion</li>
+  <li><a style="color:inherit" download href="/recordings/{{d.name}}/{{d.name}}.avi" class="download">{{d.name}}</a> - {{ d.count }} frames of detected motion</li>
   {% endfor %}
 </ol>
 
@@ -14,7 +14,7 @@
 <p>If you want to remake the video, click the date above.</p>
 <ol>
   {% for vid in existing_videos%}
-  <li><a download href="{{ url_for('static', filename=vid) }}">{{vid}}</a></li>
+  <li><a style="color:inherit" download href="{{ url_for('static', filename=vid) }}">{{vid}}</a></li>
   {% endfor %}
 </ol>
 {% endblock %}
