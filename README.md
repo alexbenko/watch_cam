@@ -20,6 +20,7 @@
   <li>Optimize image saving - Right now it saves all image as fast as possible which is equal to (camera_framerate * seconds). Which is way too much and causes my pi to lag after 10secs of detection. Work on only saving an image a second</li>
   <li>Camera always on mode - currently camera only turns on when a user goes to the webpage. (mainly till i can do testing)</li>
   <li>Support for Pi's native camera module as well as USB cameras. (I only have a USB camera right now)</li>
+  <li>Move image/video saving,getting,creating logic out of Camera model into their own</li>
 </ol>
 
 # Usage
