@@ -10,7 +10,7 @@
 <ul>
   <h2>Info About My Pi</h2>
   <li>Model: Raspberry Pi4B</li>
-  <li>OS: Ubuntu 20.0.4</li>
+  <li>OS: Debian Bullseye</li>
   <li>Ram: 4Gb</l1>
   <li>Storage Space: 256 Gb</li>
 </ul>
