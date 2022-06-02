@@ -24,7 +24,7 @@
 # Major To Do's
 <ol>
   <li><strike>Camera always on mode - currently camera only turns on when a user goes to the webpage. (mainly till i can do testing) </strike></li>
-  <li><Move image/video saving,getting,creating logic out of Camera model into their own (For watch_cam)</li>
+  <li>Move image/video saving,getting,creating logic out of Camera model into their own (For watch_cam)</li>
   <li>Optimize uploading to google drive. Worked perfectly for about 2 days, but then stopped uploading for an unknown reason.(For threaded watch cam</li>
   <li>Support other cloud storage tech, like AWS' S3.</li>
   <li>Notification system for user to be notified on motion.</li>
