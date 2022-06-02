@@ -1,11 +1,17 @@
 # About
 <p>
-  Using OpenCv and Flask I am able to "live stream" a usb camera connected to my Raspberry Pi. Really just continuously grabs the current frame from the camera as an image and updates it on the front end. I am working on a way to save these images and convert them to a video when desired. There are also features to play audio through a speaker. Currently has two detection modes, face detection and motion detection.
+  Using OpenCv and Flask I am able to "live stream" a usb camera connected to my Raspberry Pi. Really just continuously grabs the current frame from the camera as an image and updates it on the front end. There are also features to play audio through a speaker. 
 </p>
 
 </br>
 
 <p>It has an estimated detection range of around 70-100 feet. I am almost postive this is due to my low quality USB camera and once I get one that can record in 1080 the range will be a lot farther.</p>
+
+<p>There are 2 different versions of this as I developed this in my free time. </p>
+
+<p>Version 1.0 is the watch_cam folder. A little over complicated and it probably doesnt need a database. The camera is only on, when there is a client connected. Also only works with one client connected, every other client will just receive an error message. Currently has two detection modes, face detection and motion detection.</p>
+
+<p> Version 2.0 is in the threaded_watch_cam folder. Essentially, like the name implies, uses multiple threads. The main one is the flask server, which grabs the current frame global variable and continuoulsy updates the front end. The second thread is setting the globabl current frame variable from the camera, running the motion detection logic, setting a globabl boolean if it detects motion, and saves frames of detected motion to folders sorted by todays date . The final thread is a timer thread that is created every 7 seconds. This thread checks the global motion detected variable, and will upload all frames of detected motion for today to the google drive if the boolean is true. Since all the camera and motion detection logic is in its own thread, supports multiple connected clients. Probably wont work well with more than 3.</p>
 
 <ul>
   <h2>Info About My Pi</h2>
@@ -17,15 +23,26 @@
 
 # Major To Do's
 <ol>
-  <li>Optimize image saving - Right now it saves all image as fast as possible which is equal to (camera_framerate * seconds). Which is way too much and causes my pi to lag after 10secs of detection. Work on only saving an image a second</li>
   <li><strike>Camera always on mode - currently camera only turns on when a user goes to the webpage. (mainly till i can do testing) </strike></li>
-  <li>Support for Pi's native camera module as well as USB cameras. (I only have a USB camera right now)</li>
-  <li>Move image/video saving,getting,creating logic out of Camera model into their own</li>
+  <li><Move image/video saving,getting,creating logic out of Camera model into their own (For watch_cam)</li>
+  <li>Optimize uploading to google drive. Worked perfectly for about 2 days, but then stopped uploading for an unknown reason.(For threaded watch cam</li>
+  <li>Support other cloud storage tech, like AWS' S3.</li>
+  <li>Notification system for user to be notified on motion.</li>
+  <li>Working docker-compose file for threaded_watch_cam</li>
+  <li>Only upload new frames of motion. Currently just grabs todays folder and uploads it to my google drive without any logic to verify if the file has already been uploaded.</li>
 </ol>
 
-# Usage
+
+<p>Demo of Motion Detector</p>
+
+https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-9e3c-1343e66033fa.mp4
+
+
+
+# Usage for watch_cam
 <p>My docker-compose file is  <a target="_blank" rel="noopener noreferrer" href="https://github.com/alexbenko/watch_cam/blob/main/watch_cam/docker-compose.yaml">Here</a></p>
 
+<p>Stil working on set up instructions for threaded_watch_cam.</p>
 <ol>
   <li><p>First ensure you are running Ubuntu (or at least an arm64 distro) on A Raspberry Pi4</p></li>
   <li><p>Install Docker and Docker-Compose</p></li>
@@ -40,12 +57,6 @@
 
 <p>If everything is set up correctly, you should see this web-page</p>
 <img src="https://github.com/alexbenko/watch_cam/blob/main/gh/index.png"></img>
-
-<p>Demo of Motion Detector</p>
-
-https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-9e3c-1343e66033fa.mp4
-
-
 
 # Enviornment Variables to set
 <p>There are a good amount of environment variables to set. Some arent that private and can be set in your compose file but others are more should be hidden in a .env file if it will be in a public </p>
