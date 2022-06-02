@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 import uuid
 
 face_cascade=cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
+
 ds_factor=0.6
 class VideoCamera(object):
 	images_folder_path= '/recordings'

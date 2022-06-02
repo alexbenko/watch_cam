@@ -135,7 +135,11 @@ opencv_visualisation --image=/data/object.png --model=/data/model.xml --data=/da
 opencv_annotation --annotations=/file.txt --images=/photos
 watch_cam/dog.xml
 watch_cam/models/photos
-watch_cam/recordings
-threaded_watch_cam
+recordings/
 watch_cam/data
 watch_cam/audio/
+watch_cam/text_to_speech.py
+*.mp3
+text_to_speech.py
+threaded_watch_cam/client_secrets.json
+threaded_watch_cam/mycreds.txt

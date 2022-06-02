@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, Response,request,abort,jsonify,request,send_file
 from models import Sensor,VideoCamera,Speaker, Database
+import cv2
+import time
 import math
 from dotenv import load_dotenv
 import os
 from funcs import sms
 import datetime
 app_title = os.getenv('app_title', 'Cam')
-
+images_folder_path= '/recordings'
 error_responses = {
   "400": '<img src="https://http.cat/400"></img>',
   "404": '<img src="https://http.cat/404"></img>'
@@ -57,11 +59,14 @@ def local_only():
 
 @app.route('/')
 def index():
+  return render_template('index.html', app_title=app_title)
+
+@app.route('/status')
+def status():
   cpu_temp = Sensor.getCPUtemperature()
   total, used, free = Sensor.getDiskUsage()
-
   diskUsage = {"total":bytesto(total,'g'), "used": bytesto(used,'g'),"free": bytesto(free,'g')}
-  return render_template('index.html', app_title=app_title,cpu_temp=cpu_temp, diskUsage=diskUsage)
+  return render_template('status.html', app_title=app_title,cpu_temp=cpu_temp, diskUsage=diskUsage)
 
 @app.route('/videos')
 def list_videos():
@@ -76,8 +81,16 @@ def list_videos():
 @app.route('/recordings/<path:file>')
 def download_video(file):
   path = file.split("/")[1].split(".")[0]
-  video = CAMERA.createVideo(path)
-  return send_file(video)
+  image_folder = f'{images_folder_path}/{path}'
+  video_path = os.path.join('static', f'{path}.avi')
+  images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
+  frame = cv2.imread(os.path.join(image_folder, images[0]))
+  height, width, layers = frame.shape
+  video = cv2.VideoWriter(video_path, 0, 1, (width,height))
+  for image in images:
+      video.write(cv2.imread(os.path.join(image_folder, image)))
+  time.sleep(0.15) #give the pi some time to save the video to prevent accidental 404s
+  return send_file(video_path)
 
 @app.route('/cam/<mode>')
 def cam(mode):
@@ -127,7 +140,7 @@ if __name__ == '__main__':
 
   print(f'Only local access: {local_access_only}')
   print(f'Save images: {save_images}')
-  port = os.getenv("PORT", "5000")
+  port = os.getenv("PORT", "5001")
   timestamp = datetime.datetime.now()
   sms.send(f"Server started at {timestamp}")
   app.run(host='0.0.0.0',port=port)

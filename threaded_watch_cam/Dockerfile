@@ -15,7 +15,7 @@ RUN apt-get install sox -y
 RUN apt-get install libsox-fmt-mp3 -y
 RUN apt-get install python3-gst-1.0 -y
 
-RUN apt-get install tesseract-ocr
+#RUN apt-get install tesseract-ocr
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -29,4 +29,4 @@ ENV TZ="America/Denver"
 COPY . .
 EXPOSE 5000
 
-CMD python3 main.py --host=0.0.0.0
+CMD python3 app.py

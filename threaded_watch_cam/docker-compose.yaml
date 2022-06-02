@@ -1,7 +1,7 @@
 version: "3"
 services:
   app:
-    image: alexbenko/cam:latest
+    image: alexbenko/threaded_cam:latest
     volumes:
       - ./audio:/audio
       - ./recordings:/recordings
@@ -29,12 +29,4 @@ services:
     devices:
       - /dev/video0:/dev/video0
       - /dev/snd:/dev/snd
-    command: python3 main.py
-    depends_on:
-      - mongodb
-  mongodb:
-    image: arm64v8/mongo:4.4
-    env_file: .env
-    volumes:
-      - ./data2/mongo:/data/db
-      - ./.env:/.env
+    command: python3 app.py
