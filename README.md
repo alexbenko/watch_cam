@@ -18,7 +18,7 @@
 # Major To Do's
 <ol>
   <li>Optimize image saving - Right now it saves all image as fast as possible which is equal to (camera_framerate * seconds). Which is way too much and causes my pi to lag after 10secs of detection. Work on only saving an image a second</li>
-  <li>Camera always on mode - currently camera only turns on when a user goes to the webpage. (mainly till i can do testing)</li>
+  <li><strike>Camera always on mode - currently camera only turns on when a user goes to the webpage. (mainly till i can do testing) </strike></li>
   <li>Support for Pi's native camera module as well as USB cameras. (I only have a USB camera right now)</li>
   <li>Move image/video saving,getting,creating logic out of Camera model into their own</li>
 </ol>
@@ -68,14 +68,6 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
   <li><code>PYTHONUNBUFFERED</code> 0 or 1 - After the initial start up prints, all other prints in the app are ignored. Set this to 1 if you still want to see prints.</li>
 </ul>
 
-<p>Currently the only collection is of banned ips. To seed this collection, create a a file called <code>ips.json</code></p>
-<p>Put this file in a folder called data and put the folder in the same directory as your compose file.</p>
-<p>The json file should be in the format:</p>
-</br>
-<code>
-[
-  {"ip": "[the ip you want banned]"},
-  ...
-]
+
 </code>
 <p>The server will use this file to seed the banned ip collection if that collection is empty on startup.</p>
