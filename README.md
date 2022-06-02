@@ -10,7 +10,7 @@
 <ul>
   <h2>Info About My Pi</h2>
   <li>Model: Raspberry Pi4B</li>
-  <li>OS: Rasbian Bullseye</li>
+  <li>OS: Debian Bullseye</li>
   <li>Ram: 4Gb</l1>
   <li>Storage Space: 256 Gb</li>
 </ul>
@@ -20,6 +20,7 @@
   <li>Optimize image saving - Right now it saves all image as fast as possible which is equal to (camera_framerate * seconds). Which is way too much and causes my pi to lag after 10secs of detection. Work on only saving an image a second</li>
   <li>Camera always on mode - currently camera only turns on when a user goes to the webpage. (mainly till i can do testing)</li>
   <li>Support for Pi's native camera module as well as USB cameras. (I only have a USB camera right now)</li>
+  <li>Move image/video saving,getting,creating logic out of Camera model into their own</li>
 </ol>
 
 # Usage
@@ -32,7 +33,7 @@
   <li><p>Copy the docker-compose file to wherever you want to run it and change any environment variables, etc.</p></li>
   <li><p>Look at my compose file for reference, create a .env (look bellow for all that you can set) file in the same directory as your docker-compose file.</p></li>
   <li><p>Type: </p> <code>sudo docker-compose up </code></li>
-  <li><p>If everything is set type in your browser: [your pis local IP address]:5000/</p></li>
+  <li><p>If everything is set type in your browser: [your pis local IP address]:[your specified port env]/</p></li>
   <li><p>If you want to play audio, put desired .mp3 files into the /recordings in the same directory as your compose file and buttons will appear in either detector.</p></li>
 </ol>
 <br></br>
@@ -54,6 +55,7 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
   <li><code>app_title</code> - String - The name of the app displayed in the tab and various webpages. Defaults to 'Cam'. (optional)</li>
   <li><code>save_images</code> -  Boolean- Whether or not the server will save the images it detects motion/faces in. (optional)</li>
   <li><code>local_access_only</code> -  Boolean- Whether or not the server will accept requests from external IPs. Only necessary if the server is publicly accessible. (optional)</li>
+  <li><code>PORT</code> - The port you want the flaskr server to run on, defaults to 5000</li>
 </ul>
 <p>The next variables should be hidden from public view. Right now no user/password set up</p>
 <ul>
