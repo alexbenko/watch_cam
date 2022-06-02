@@ -1,3 +1,6 @@
+# Demo of Motion Detector
+
+https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-9e3c-1343e66033fa.mp4
 # About
 <p>
   Using OpenCv and Flask I am able to "live stream" a usb camera connected to my Raspberry Pi. Really just continuously grabs the current frame from the camera as an image and updates it on the front end. There are also features to play audio through a speaker. 
@@ -33,9 +36,7 @@
 </ol>
 
 
-<p>Demo of Motion Detector</p>
 
-https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-9e3c-1343e66033fa.mp4
 
 
 
