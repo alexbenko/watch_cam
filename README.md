@@ -29,7 +29,7 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
   <li>Only upload new frames of motion. Currently just grabs todays folder and uploads it to my google drive without any logic to verify if the file has already been uploaded.</li>
 </ol>
 
-#Pi Set Up
+# Pi Set Up
 <ol>
   <li><p>First ensure you are running Raspberry Pi OS (or at least an arm64 distro) on A Raspberry Pi4 since the docker image is built off of  <code>arm64v8/debian:bullseye</code>.</p></li>
   <li><p>Install Docker and Docker-Compose</p></li>
