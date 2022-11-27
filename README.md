@@ -67,6 +67,3 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
   <li><code>CARRIER</code> - String - Name of your carrier. Currently only works with Verizon and AT&T. Valid options are 'att' or 'verizon' (required if you set EMAIL, EMAIL_PASSWORD, and PHONE_NUMBER)</li>
   <li><code>PYTHONUNBUFFERED</code> 0 or 1 - After the initial start up prints, all other prints in the app are ignored. Set this to 1 if you still want to see prints.</li>
 </ul>
-
-
-</code>
