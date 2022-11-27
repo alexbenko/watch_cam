@@ -1,11 +1,8 @@
-# import the necessary packages
 import numpy as np
-import imutils
-import cv2
-
+from pathlib import Path
+import imutils, cv2, uuid, datetime, time
 class SingleMotionDetector:
   def __init__(self, accumWeight=0.5):
-    # store the accumulated weight factor
     self.accumWeight = accumWeight
 
     # initialize the background model
@@ -49,3 +46,13 @@ class SingleMotionDetector:
     # with bounding box
     return (thresh, (minX, minY, maxX, maxY))
 
+  def save_image(self, image):
+    todays_date = str(datetime.date.today())
+
+    path = Path('..','recordings', todays_date)
+    path.mkdir(parents=True, exist_ok=True)
+
+    rn = str(time.time()) # simplest way to generate unique name for each frame
+    name = uuid.uuid4().hex + rn
+
+    cv2.imwrite(f'{path}/{name}.png', image)

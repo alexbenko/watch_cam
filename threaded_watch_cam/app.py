@@ -1,69 +1,33 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from models import SingleMotionDetector, G_Drive, RepeatedTimer
+from models import SingleMotionDetector, G_Drive, RepeatedTimer, Speaker
 from imutils.video import VideoStream
-from flask import Response
-from flask import Flask
-from flask import render_template
+from pathlib import Path
+from flask import Flask, jsonify, render_template, Response, abort, send_file
+from dotenv import load_dotenv
+
 import threading
 import argparse
 import datetime
 import imutils
 import time
-import cv2
 import os
-import uuid
-from pathlib import Path
+import cv2
 import atexit
 
+load_dotenv()
+
 RECORDINGS_FOLDER_ID = "1VJvjQRTzpDSehsjNAYjSlUc5tbgCEviB"
-
-def save_image(image):
-  todays_date = str(datetime.date.today())
-  todays_folder = f'/recordings/{todays_date}'
-
-  path = Path('..','recordings', todays_date)
-  path.mkdir(parents=True, exist_ok=True)
-
-  rn = str(time.time()) # simplest way to generate unique name for each frame
-  name = uuid.uuid4().hex + rn
-
-  cv2.imwrite(f'{path}/{name}.png', image)
-
 outputFrame = None
 lock = threading.Lock()
 motion_detected = False
-# initialize a flask object
+IMAGES_PATH= '/recordings'
 app = Flask(__name__,static_url_path='/static')
 
 #im deploying this on a pi but using a normal usb camera, if i ever use the RPi camera module, i would use this line instead
 #vs = VideoStream(usePiCamera=1).start()
 vs = VideoStream(src=0).start()
 time.sleep(2.0) #let camera start up
-
-@app.route('/videos')
-def list_videos():
-  days = [day for day in os.listdir('../recordings')]
-  daysWithPictures = []
-  for day in days:
-    count = len([pic for pic in os.listdir(f'../recordings/{day}') if pic.endswith(".png") ])
-    daysWithPictures.append({"name": day, "count": count})
-  existing_videos = [vid for vid in os.listdir('./static') if vid.endswith(".avi")]
-  return render_template('download_video.html', daysWithPictures=daysWithPictures, app_title=app_title, existing_videos=existing_videos)
-
-@app.route('/recordings/<path:file>')
-def download_video(file):
-  path = file.split("/")[1].split(".")[0]
-  image_folder = f'{images_folder_path}/{path}'
-  video_path = os.path.join('static', f'{path}.avi')
-  images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
-  frame = cv2.imread(os.path.join(image_folder, images[0]))
-  height, width, layers = frame.shape
-  video = cv2.VideoWriter(video_path, 0, 1, (width,height))
-  for image in images:
-      video.write(cv2.imread(os.path.join(image_folder, image)))
-  time.sleep(0.15) #give the pi some time to save the video to prevent accidental 404s
-  return send_file(video_path)
 
 @app.route("/video_feed")
 def video_feed():
@@ -74,9 +38,45 @@ def video_feed():
 
 @app.route('/cam')
 def cam():
-  return render_template("cam.html")
+  audio_files = [file for file in os.listdir('./audio') if file.endswith(".mp3")]
+  return render_template('cam.html',  audio_files=audio_files)
 
-def detect_motion(frameCount):
+@app.route('/videos')
+def list_videos():
+  days = [day for day in os.listdir('./recordings')]
+  days_with_pictures = []
+  for day in days:
+    count = len([pic for pic in os.listdir(f'./recordings/{day}') if pic.endswith(".png") ])
+    days_with_pictures.append({"name": day, "count": count})
+  existing_videos = [vid for vid in os.listdir('./static') if vid.endswith(".avi")]
+  return render_template('download_video.html', daysWithPictures=days_with_pictures, app_title='Watch Cam', existing_videos=existing_videos)
+
+@app.route('/recordings/<path:file>')
+def download_video(file):
+  path = file.split("/")[1].split(".")[0]
+  image_folder = f'{IMAGES_PATH}/{path}'
+  video_path = os.path.join('static', f'{path}.avi')
+  images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
+  frame = cv2.imread(os.path.join(image_folder, images[0]))
+  height, width, layers = frame.shape
+  video = cv2.VideoWriter(video_path, 0, 1, (width,height))
+  for image in images:
+      video.write(cv2.imread(os.path.join(image_folder, image)))
+  time.sleep(0.15) #give the pi some time to save the video to prevent accidental 404s
+  return send_file(video_path)
+
+@app.route('/play/<file>', methods = ['POST'])
+def play(file):
+  print('PLAYING SOUND')
+  try:
+    Speaker.play(f'/audio/{file}')
+    resp = jsonify(success=True)
+    resp.status_code = 200
+    return resp
+  except:
+    return abort(404),404
+
+def detect_motion(frame_count):
   # grab global references to the video stream, output frame, and
   # lock variables
   global vs, outputFrame, lock, motion_detected
@@ -99,7 +99,7 @@ def detect_motion(frameCount):
     # if the total number of frames has reached a sufficient
     # number to construct a reasonable background model, then
     # continue to process the frame
-    if total > frameCount:
+    if total > frame_count:
       # detect motion in the image
       motion = md.detect(gray)
       # check to see if motion was found in the frame
@@ -107,8 +107,8 @@ def detect_motion(frameCount):
         motion_detected = True
         # unpack the tuple and draw the box surrounding the
         # "motion area" on the output frame
-        (thresh, (minX, minY, maxX, maxY)) = motion
-        cv2.rectangle(frame, (minX, minY), (maxX, maxY), (0, 0, 255), 2)
+        (thresh, (min_x, min_y, max_x, max_y)) = motion
+        cv2.rectangle(frame, (min_x, min_y), (max_x, max_y), (0, 0, 255), 2)
       else:
         motion_detected = False
 
@@ -124,7 +124,7 @@ def detect_motion(frameCount):
       frame_copy = frame.copy()
       outputFrame = frame_copy
       if motion_detected:
-        save_image(frame_copy)
+        md.save_image(frame_copy)
 
 
 def generate():
@@ -144,13 +144,10 @@ def generate():
     yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
       bytearray(encodedImage) + b'\r\n')
 
-def OnServerClose(timer):
-  timer.stop()
+def on_server_close(timer):
+    timer.stop()
 
 def backup_recordings_if_motion():
-  global motion_detected
-  if motion_detected:
-    print("MOTION DETECTED, backing up images")
     g = G_Drive()
     todays_date = str(datetime.date.today())
     folder_path = Path("..", "recordings", todays_date)
@@ -173,10 +170,10 @@ if __name__ == '__main__':
   t.start()
 
   #start a timer thread that will check if there is motion every 10 secs and upload to my google drive if there is
-  print(f'Checking for motion every {SAVE_TIMER} seconds')
-  timer_thread = RepeatedTimer(int(SAVE_TIMER), backup_recordings_if_motion) #starts automatically
-  atexit.register(OnServerClose, timer=timer_thread)
-  app.run(host='0.0.0.0', port=4269,threaded=True, use_reloader=False)
+  #print(f'Checking for motion every {SAVE_TIMER} seconds')
+  #timer_thread = RepeatedTimer(int(SAVE_TIMER), backup_recordings_if_motion) #starts automatically
+  #atexit.register(on_server_close, timer=timer_thread)
+  app.run(host='0.0.0.0', port=5000,threaded=True, use_reloader=False)
 
 vs.stop()
 

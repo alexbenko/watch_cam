@@ -7,7 +7,7 @@ carriers = {
 	'verizon':  '@vtext.com',
 }
 #all major carries typically assign you an email address that is <your number>@<carrierdomain>. sending an email to it will forward it to the number as a text
-def send(message):
+def send_sms(message):
 	load_dotenv()
 	number = os.getenv("PHONE_NUMBER")
 	email = os.getenv("EMAIL")

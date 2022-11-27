@@ -11,12 +11,7 @@ services:
     env_file: .env
     environment:
       app_title: Watch Cam
-      PORT: 5000
-      save_images: "False"
-      MONGODB_DATABASE: ${MONGODB_DATABASE}
-      MONGODB_USERNAME: ${MONGODB_USERNAME}
-      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
-      MONGODB_HOSTNAME: mongodb
+      PORT: ${PORT}
       PYTHONUNBUFFERED: 1 #for some reason docker suppresed any prints beyond the start up ones, this enables prints in the docker container
       local_access_only: "True"
       EMAIL: ${EMAIL}
@@ -24,6 +19,7 @@ services:
       PHONE_NUMBER: ${PHONE_NUMBER}
       save_images: "True"
       CARRIER: ${CARRIER}
+      TZ: ${TZ}
     ports:
       - "5000:5000"
     devices:

@@ -1,11 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Watch Cam</title>
-</head>
-<body>
-  <img style="display: block; margin-left: auto; margin-right: auto; width: 65%; height: auto;" src="{{ url_for('video_feed') }}">
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}{{app_title}}{% endblock %}
+{% block head %}
+  {{ super() }}
+  <script>
+    function removeLoadingText(){
+      const text = document.getElementById("loading");
+      text.remove()
+    }
+    function playSound(toPlay){
+      const file = toPlay.getAttribute("data-file");
+      let req = fetch(`/play/${file}`, {
+        method: "POST"
+      })
+
+      req.then(res => console.log(res))
+    }
+
+    function onError(){
+      alert("There was an error with the camera, refreshing might fix this or someone else is looking through the camera")
+      removeLoadingText()
+    }
+  </script>
+{% endblock %}
+{% block content %}
+  <h1>{{ app_title }}</h1>
+  <img alt="Stream Loading..." id="live-stream" onerror="onError()" onload="removeLoadingText()" src="{{ url_for('video_feed') }}" style="display: block; margin-left: auto; margin-right: auto; width: 60%; height: 90%;" a>
+  <p id="loading">Starting Camera ...</p>
+  {% if audio_files %}
+  <div style="display: flex; flex-direction: column; padding-bottom: 1rem;">
+    <h2>Sounds To Play:</h2>
+    <div style="flex-direction: row">
+    {% for file in audio_files%}
+      <button id="file" onclick="playSound(this)" data-file="{{file}}">{{file}}</button>
+    {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <p><a style="color:inherit" href="/videos">Recordings</a></p></li>
+{% endblock %}
