@@ -51,9 +51,6 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
 </ol>
 <br></br>
 
-<p>If everything is set up correctly, you should see this web-page</p>
-<img src="https://github.com/alexbenko/watch_cam/blob/main/gh/index.png"></img>
-
 # Enviornment Variables to set
 <p>There are a good amount of environment variables to set. Some arent that private and can be set in your compose file but others are more should be hidden in a .env file if it will be in a public </p>
 <br></br>
