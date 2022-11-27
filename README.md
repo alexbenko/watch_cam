@@ -52,7 +52,7 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
   <li><code>audio</code> - Where you can put mp3 files that will play through the speaker if desired.</li>
   <li><code>static</code> - Where you can put static front end files. Like .js, .css , favicon.svg, etc. Currently only supports favicon.</li>
 </ol>
-<br></br>
+
 # Enviornment Variables to set
 <p>There are a good amount of environment variables to set. Some arent that private and can be set in your compose file but others are more should be hidden in a .env file if it will be in a public </p>
 <br></br>
