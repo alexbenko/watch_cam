@@ -3,18 +3,12 @@
 https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-9e3c-1343e66033fa.mp4
 # About
 <p>
-  Using OpenCv and Flask I am able to "live stream" a usb camera connected to my Raspberry Pi. Really just continuously grabs the current frame from the camera as an image and updates it on the front end. There are also features to play audio through a speaker. 
+  Using OpenCv and Flask I am able to live stream a usb camera conneced to a Raspberry Pi to a browser with any detected motion.
 </p>
 
 </br>
 
-<p>It has an estimated detection range of around 70-100 feet. I am almost postive this is due to my low quality USB camera and once I get one that can record in 1080 the range will be a lot farther.</p>
-
-<p>There are 2 different versions of this as I developed this in my free time. </p>
-
-<p>Version 1.0 is the watch_cam folder. This was practice as I learned how to use OpenCV and I do not recommend using.</p>
-
-<p> Uses multiple threads. The main one is the flask server, which grabs the current frame global variable (which is the current frame loaded into memory) and continuoulsy updates the front end. The second thread is setting the globabl current frame variable from the camera, running the motion detection logic, setting a globabl boolean if it detects motion, and saves frames of detected motion to folders sorted by todays date . The final, optional, thread is a timer thread that is created every 7 seconds after the previous one is done. This thread checks the global motion detected variable, and will upload all frames of detected motion for today to the google drive if the boolean is true. Since all the camera and motion detection logic is in its own thread, supports multiple connected clients. Probably wont work well with more than 3.</p>
+<p>It has an estimated detection range of around 70-100 feet. I am almost postive this is due to my low quality USB camera and if I get one that can record in 1080 the range will be a lot farther. Have not tested for production and currently uses the development server from Flask.</p>
 
 <ul>
   <h2>Info About My Pi</h2>
