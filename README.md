@@ -22,10 +22,12 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
 <ol>
   <li><strike>Camera always on mode - currently camera only turns on when a user goes to the webpage. (mainly till i can do testing) </strike></li>
   <li><strike>Move image/video saving,getting,creating logic out of Camera model into their own (For watch_cam)</strike></li>
+  <li><strike>Working docker-compose file for threaded_watch_cam</strike></li>
+  <li>Production server</li>
   <li>Optimize uploading to google drive. Worked perfectly for about 2 days, but then stopped uploading for an unknown reason.(For threaded watch cam</li>
   <li>Support other cloud storage tech, like AWS' S3.</li>
   <li>Notification system for user to be notified on motion.</li>
-  <li><strike>Working docker-compose file for threaded_watch_cam</strike></li>
+
   <li>Only upload new frames of motion. Currently just grabs todays folder and uploads it to my google drive without any logic to verify if the file has already been uploaded.</li>
 </ol>
 
