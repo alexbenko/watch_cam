@@ -4,3 +4,5 @@ opencv-contrib-python
 imutils
 pydrive
 python-dotenv
+gunicorn
+gevent

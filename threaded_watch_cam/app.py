@@ -6,13 +6,7 @@ from pathlib import Path
 from flask import Flask, jsonify, render_template, Response, abort, send_file
 from dotenv import load_dotenv
 
-import threading
-import argparse
-import datetime
-import imutils
-import time
-import os
-import cv2
+import os, cv2, threading,argparse,datetime, imutils, time
 import atexit
 
 load_dotenv()
@@ -21,25 +15,33 @@ RECORDINGS_FOLDER_ID = "1VJvjQRTzpDSehsjNAYjSlUc5tbgCEviB"
 outputFrame = None
 lock = threading.Lock()
 motion_detected = False
+
 IMAGES_PATH= '/recordings'
 app = Flask(__name__,static_url_path='/static')
+TITLE = os.getenv('app_title', 'Cam')
+SAVE_IMAGES = os.getenv("save_images", "False").lower() in ('true', '1', 't')
 
 #im deploying this on a pi but using a normal usb camera, if i ever use the RPi camera module, i would use this line instead
 #vs = VideoStream(usePiCamera=1).start()
 vs = VideoStream(src=0).start()
 time.sleep(2.0) #let camera start up
 
+@app.before_first_request
+def init_gloabals():
+  if __name__ != '__main__': #means gunicorn is running server
+    t = threading.Thread(target=detect_motion)
+    t.daemon = True
+    t.start()
+    atexit.register(on_server_close, vs=vs)
+
 @app.route("/video_feed")
 def video_feed():
-  # return the response generated along with the specific media
-  # type (mime type)
-  return Response(generate(),
-    mimetype = "multipart/x-mixed-replace; boundary=frame")
+  return Response(generate(),mimetype = "multipart/x-mixed-replace; boundary=frame")
 
 @app.route('/cam')
 def cam():
   audio_files = [file for file in os.listdir('./audio') if file.endswith(".mp3")]
-  return render_template('cam.html',  audio_files=audio_files)
+  return render_template('cam.html',  app_title=TITLE, audio_files=audio_files)
 
 @app.route('/videos')
 def list_videos():
@@ -75,16 +77,13 @@ def play(file):
     return resp
   except:
     return abort(404),404
-
-def detect_motion(frame_count):
-  # grab global references to the video stream, output frame, and
-  # lock variables
+#TODO:Abstract this
+def detect_motion(frame_count=32):
+  # grab global references to the video stream, output frame, and lock variables
   global vs, outputFrame, lock, motion_detected
-  # initialize the motion detector and the total number of frames
-  # read thus far
-  md = SingleMotionDetector(accumWeight=0.1)
+
+  md = SingleMotionDetector(accum_weight=0.1)
   total = 0
-    # loop over frames from the video stream
   while True:
     # read the next frame from the video stream, resize it,
     # convert the frame to grayscale, and blur it
@@ -100,52 +99,45 @@ def detect_motion(frame_count):
     # number to construct a reasonable background model, then
     # continue to process the frame
     if total > frame_count:
-      # detect motion in the image
       motion = md.detect(gray)
-      # check to see if motion was found in the frame
       if motion is not None:
         motion_detected = True
-        # unpack the tuple and draw the box surrounding the
-        # "motion area" on the output frame
+        # draw the box surrounding the "motion area" on the output frame
         (thresh, (min_x, min_y, max_x, max_y)) = motion
         cv2.rectangle(frame, (min_x, min_y), (max_x, max_y), (0, 0, 255), 2)
       else:
         motion_detected = False
 
-
-    # update the background model and increment the total number
-    # of frames read thus far
+    # update the background model and increment the total number of frames read thus far
     md.update(gray)
     total += 1
 
-    # acquire the lock, set the output frame, and release the
-    # lock
+    # acquire the lock, set the output frame, and release the lock
     with lock:
       frame_copy = frame.copy()
       outputFrame = frame_copy
-      if motion_detected:
+      if motion_detected and SAVE_IMAGES:
         md.save_image(frame_copy)
 
 
 def generate():
   global outputFrame, lock, motion_detected
   while True:
-    # wait until the lock is acquired
     with lock:
       if outputFrame is None:
         print('no outputFrame')
         continue
 
-      (flag, encodedImage) = cv2.imencode(".jpg", outputFrame)
+      (flag, encoded_image) = cv2.imencode(".jpg", outputFrame)
       if not flag:
         print('no flag')
         continue
     # yield the output frame in the byte format
     yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
-      bytearray(encodedImage) + b'\r\n')
+      bytearray(encoded_image) + b'\r\n')
 
-def on_server_close(timer):
-    timer.stop()
+def on_server_close(vs):
+  vs.stop() #stop video stream
 
 def backup_recordings_if_motion():
     g = G_Drive()
@@ -157,24 +149,16 @@ def backup_recordings_if_motion():
     g.back_up_recordings(todays_id,folder_path)
 
 if __name__ == '__main__':
-  SAVE_TIMER = 7
-  ap = argparse.ArgumentParser()
-
-  ap.add_argument("-f", "--frame-count", type=int, default=32,help="# of frames used to construct the background model")
-  args = vars(ap.parse_args())
-
-  # start a thread that will perform motion detection
-  t = threading.Thread(target=detect_motion, args=(
-    args["frame_count"],))
+  # SAVE_TIMER = 7
+  t = threading.Thread(target=detect_motion)
   t.daemon = True
   t.start()
+  #TODO: FIX THE STUFF BELLOW
   #start a timer thread that will check if there is motion every 10 secs and upload to my google drive if there is
-  #print(f'Checking for motion every {SAVE_TIMER} seconds')
   #timer_thread = RepeatedTimer(int(SAVE_TIMER), backup_recordings_if_motion) #starts automatically
-  #atexit.register(on_server_close, timer=timer_thread)
-  app.run(host='0.0.0.0', port=os.getenv('PORT', 5000),threaded=True, use_reloader=False)
+  atexit.register(on_server_close, vs=vs)
+  app.run(host=os.getenv('HOST', '0.0.0.0'), port=os.getenv('PORT', 5000),threaded=True, use_reloader=False)
 
-vs.stop()
 
 #this are just my docker commands so i dont have to memorize them
 #docker build -t threaded_cam:latest .

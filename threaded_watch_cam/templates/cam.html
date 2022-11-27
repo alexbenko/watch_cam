@@ -24,7 +24,14 @@
 {% endblock %}
 {% block content %}
   <h1>{{ app_title }}</h1>
-  <img alt="Stream Loading..." id="live-stream" onerror="onError()" onload="removeLoadingText()" src="{{ url_for('video_feed') }}" style="display: block; margin-left: auto; margin-right: auto; width: 60%; height: 90%;" a>
+  <img
+    alt="Stream Loading..."
+    id="live-stream"
+    onerror="onError()"
+    onload="removeLoadingText()"
+    src="{{ url_for('video_feed') }}"
+    style="display: block; margin-left: auto; margin-right: auto; width: 60%; height: 90%;"
+  >
   <p id="loading">Starting Camera ...</p>
   {% if audio_files %}
   <div style="display: flex; flex-direction: column; padding-bottom: 1rem;">

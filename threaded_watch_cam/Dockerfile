@@ -28,4 +28,6 @@ RUN pip3 install -r requirements.txt
 COPY . .
 EXPOSE $PORT
 
-CMD python3 app.py
+RUN chmod +x ./entrypoint.sh
+ENTRYPOINT ["sh", "entrypoint.sh"]
+#CMD python3 app.py
