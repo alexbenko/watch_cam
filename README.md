@@ -40,7 +40,7 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
 <p>My docker-compose file is  <a target="_blank" rel="noopener noreferrer" href="https://github.com/alexbenko/watch_cam/blob/main/watch_cam/docker-compose.yaml">Here</a></p>
 
 <ol>
-  <li><p>First ensure you are running Raspberry Pi OS (or at least an arm64 distro) on A Raspberry Pi4</p></li>
+  <li><p>First ensure you are running Raspberry Pi OS (or at least an arm64 distro) on A Raspberry Pi4 since the docker image is built off of  <code>arm64v8/debian:bullseye</code>.</p></li>
   <li><p>Install Docker and Docker-Compose</p></li>
   <li><p>Attatch a USB camera(required) and attatch a speaker (optional)</p></li>
   <li><p>Copy the docker-compose file to wherever you want to run it and change any environment variables in a .env file.</p></li>
