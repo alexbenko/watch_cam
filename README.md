@@ -59,8 +59,6 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
 </ul>
 <p>The next variables should be hidden from public view. Right now no user/password set up</p>
 <ul>
-  <li><code>MONGODB_DATABASEe</code> - String - Name of your mongodb database.</li>
-  <li><code>MONGODB_HOSTNAME</code> - String - Name of your mongodb host for the connection string.</li>
   <li><code>EMAIL</code> - String - Email you want to use to forward texts if you desire. Currently only works with Gmail (optional).</li>
   <li><code>EMAIL_PASSWORD</code> - String - Password for your email account (required if you set EMAIL).</li>
   <li><code>PHONE_NUMBER</code> - String - The phone number you want texts to be forwarded to. (required if you set EMAIL and EMAIL_PASSWORD)</li>
