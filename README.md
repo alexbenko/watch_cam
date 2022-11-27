@@ -64,7 +64,9 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
   <li><code>HOST</code> - Defaults to 0.0.0.0.  </li>
   <li><code>TZ</code> - Timezone for time/date stamps.  </li>
   <li><code>GUNICORN_WORKERS</code> - Number of workers for Gunicorn if you need to specify it. Otherwise defaults to the docs reccomendation of (2 x $num_cores) + 1.  </li>
+  <li><code>PRE_LOAD</code> - Defaults to True. Set this if you want to turn off the pre-load setting for gunicorn.</li>
 </ul>
+
 <p>The next variables should be hidden from public view. Right now no user/password set up</p>
 <ul>
   <li><code>EMAIL</code> - String - Email you want to use to forward texts if you desire. Currently only works with Gmail (optional).</li>
