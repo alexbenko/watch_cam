@@ -63,6 +63,7 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
   <li><code>PORT</code> - The port you want the flask server to run on, defaults to 5000</li>
   <li><code>HOST</code> - Defaults to 0.0.0.0.  </li>
   <li><code>TZ</code> - Timezone for time/date stamps.  </li>
+  <li><code>GUNICORN_WORKERS</code> - Number of workers for Gunicorn if you need to specify it. Otherwise defaults to the docs reccomendation of (2 x $num_cores) + 1.  </li>
 </ul>
 <p>The next variables should be hidden from public view. Right now no user/password set up</p>
 <ul>
