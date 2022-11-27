@@ -29,6 +29,7 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
   <li>Only upload new frames of motion. Currently just grabs todays folder and uploads it to my google drive without any logic to verify if the file has already been uploaded.</li>
 </ol>
 
+# Pi Set Up
 <ol>
   <li><p>First ensure you are running Raspberry Pi OS (or at least an arm64 distro) on A Raspberry Pi4 since the docker image is built off of  <code>arm64v8/debian:bullseye</code>.</p></li>
   <li><p>Install Docker and Docker-Compose</p></li>
@@ -48,7 +49,6 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
 <ul>
   <li><code>app_title</code> - String - The name of the app displayed in the tab and various webpages. Defaults to 'Cam'. (optional)</li>
   <li><code>save_images</code> -  Boolean- Whether or not the server will save the images it detects motion/faces in. (optional)</li>
-  <li><code>local_access_only</code> -  Boolean- Whether or not the server will accept requests from external IPs. Only necessary if the server is publicly accessible. (optional)</li>
   <li><code>PORT</code> - The port you want the flask server to run on, defaults to 5000</li>
   <li><code>TZ</code> - Timezone for time/date stamps.  </li>
 </ul>
