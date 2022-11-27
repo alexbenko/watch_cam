@@ -3,7 +3,7 @@
 https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-9e3c-1343e66033fa.mp4
 # About
 <p>
-  Using OpenCv and Flask I am able to live stream a usb camera conneced to a Raspberry Pi to a browser with any detected motion.
+  Using OpenCv and Flask I am able to live stream a usb camera conneced to a Raspberry Pi to a browser with any detected motion. Really similar to how services like Arlo or any other smart camera works. Hopefully can be a replacement.
 </p>
 
 </br>
