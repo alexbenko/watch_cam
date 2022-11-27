@@ -44,6 +44,15 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
 </ol>
 <br></br>
 
+# Folders
+<p>There will be 3 folders mounted from the docker image to your pi. Which is why I recommend you put the compose file into its own directory with its .env file. You can create them yourself or wait for docker to create them.</p>
+<br></br>
+<ol>
+  <li><code>recordings</code> - Where each frame of detected motion will be saved to sorted by the day.</li>
+  <li><code>audio</code> - Where you can put mp3 files that will play through the speaker if desired.</li>
+  <li><code>static</code> - Where you can put static front end files. Like .js, .css , favicon.svg, etc. Currently only supports favicon.</li>
+</ol>
+<br></br>
 # Enviornment Variables to set
 <p>There are a good amount of environment variables to set. Some arent that private and can be set in your compose file but others are more should be hidden in a .env file if it will be in a public </p>
 <br></br>
