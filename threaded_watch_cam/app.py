@@ -168,12 +168,11 @@ if __name__ == '__main__':
     args["frame_count"],))
   t.daemon = True
   t.start()
-
   #start a timer thread that will check if there is motion every 10 secs and upload to my google drive if there is
   #print(f'Checking for motion every {SAVE_TIMER} seconds')
   #timer_thread = RepeatedTimer(int(SAVE_TIMER), backup_recordings_if_motion) #starts automatically
   #atexit.register(on_server_close, timer=timer_thread)
-  app.run(host='0.0.0.0', port=5000,threaded=True, use_reloader=False)
+  app.run(host='0.0.0.0', port=os.getenv('PORT', 5000),threaded=True, use_reloader=False)
 
 vs.stop()
 
