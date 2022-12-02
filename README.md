@@ -26,7 +26,7 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
   <li><strike>Production server</strike></li>
   <li>Optimize uploading to google drive. Worked perfectly for about 2 days, but then stopped uploading for an unknown reason.(For threaded watch cam</li>
   <li>Support other cloud storage tech, like AWS' S3.</li>
-  <li>Notification system for user to be notified on motion.</li>
+  <li>Notification system for user to be notified on motion. (Text or Email)</li>
 
   <li>Only upload new frames of motion. Currently just grabs todays folder and uploads it to my google drive without any logic to verify if the file has already been uploaded.</li>
   <li>Allow user to record audio in browser to play through Pi speaker. (might not be possible without https)</li>
