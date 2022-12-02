@@ -29,7 +29,7 @@ https://user-images.githubusercontent.com/37863173/153511768-f405b4e0-3528-4df7-
   <li>Notification system for user to be notified on motion.</li>
 
   <li>Only upload new frames of motion. Currently just grabs todays folder and uploads it to my google drive without any logic to verify if the file has already been uploaded.</li>
-  <li>Allow user to record audio in browser to play through Pi speaker.</li>
+  <li>Allow user to record audio in browser to play through Pi speaker. (might not be possible without https)</li>
   <li>Update UI to something fancier, probably Material UI.</li>
   <li>User auth so server can be publicy available.</li>
 </ol>
