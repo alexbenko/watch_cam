@@ -6,7 +6,7 @@
 <h1>Days with a video</h1>
 <ol>
   {% for d in daysWithPictures%}
-  <li><a style="color:inherit" download href="/recordings/{{d.name}}/{{d.name}}.avi" class="download">{{d.name}}</a> - {{ d.count }} frames of detected motion</li>
+  <li><a style="color:inherit" download href="/recordings/{{d.name}}/{{d.name}}.mp4" class="download">{{d.name}}</a> - {{ d.count }} frames of detected motion</li>
   {% endfor %}
 </ol>
 

@@ -1,5 +1,5 @@
 FROM arm64v8/debian:bullseye
-ARG DEBIAN_FRONTEND=noninteractive
+#ARG DEBIAN_FRONTEND=noninteractive
 ENV PYTHONIOENCODING=utf-8
 
 RUN apt-get update \
@@ -23,11 +23,9 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 COPY ./requirements.txt ./requirements.txt
-RUN pip3 install -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
 EXPOSE $PORT
-
-RUN chmod +x ./entrypoint.sh
-ENTRYPOINT ["sh", "entrypoint.sh"]
-#CMD python3 app.py
+ENV ENVIORNMENT production
+CMD python3 main.py

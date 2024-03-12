@@ -25,4 +25,4 @@ services:
     devices:
       - /dev/video0:/dev/video0
       - /dev/snd:/dev/snd
-    command: python3 app.py
+    command: python3 main.py
