@@ -40,6 +40,7 @@ function Index() {
           onError={() => alert("There was an error with the camera, refreshing might fix this or someone else is looking through the camera")}
           onLoad={() => setCameraStarted(true)}
           src={`${apiRootPath}/video_feed`}
+          style={{ width: '90%', height: 'auto' }}
         />
 
         {!cameraStarted && <Typography variant="body1">Starting Camera ...</Typography>}
