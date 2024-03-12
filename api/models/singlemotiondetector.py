@@ -53,6 +53,6 @@ class SingleMotionDetector:
     path.mkdir(parents=True, exist_ok=True)
 
     rn = str(time.time()) # simplest way to generate unique name for each frame
-    name = uuid.uuid4().hex + rn
+    name = rn + uuid.uuid4().hex
 
     cv2.imwrite(f'{path}/{name}.png', image)

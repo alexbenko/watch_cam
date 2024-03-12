@@ -1,1 +1,0 @@
-exec gunicorn wsgi:app
